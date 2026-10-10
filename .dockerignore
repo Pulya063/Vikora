@@ -1,0 +1,17 @@
+**/node_modules
+**/.next
+**/__pycache__
+**/.pytest_cache
+**/*.pyc
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+.git
+.idea
+.venv
+.data
+.logs
+.tools
+.pnpm-store
+docs
+scripts

@@ -1,0 +1,33 @@
+{
+  "name": "vikora",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "dev:lan": "node scripts/dev-lan.cjs",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "browser": "playwright-cli -s=vikora",
+    "browser:open": "playwright-cli -s=vikora open",
+    "browser:snapshot": "playwright-cli -s=vikora snapshot",
+    "browser:screenshot": "playwright-cli -s=vikora screenshot",
+    "browser:close": "playwright-cli -s=vikora close"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@playwright/cli": "^0.1.22",
+    "@playwright/test": "^1.56.0",
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.8.0"
+  }
+}

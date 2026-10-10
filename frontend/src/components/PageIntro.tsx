@@ -1,0 +1,4 @@
+import Link from 'next/link';
+type Crumb={label:string;href?:string};
+export function Breadcrumbs({items}:{items:Crumb[]}){return <nav className="breadcrumbs" aria-label="Хлібні крихти">{items.map((item,index)=><span className="breadcrumb-item" key={`${item.label}-${index}`}>{index>0&&<i aria-hidden="true">/</i>}{item.href?<Link href={item.href}>{item.label}</Link>:<span aria-current="page">{item.label}</span>}</span>)}</nav>}
+export default function PageIntro({label,title,description,breadcrumbs}:{label:string;title:string;description:string;breadcrumbs?:Crumb[]}){const items=breadcrumbs||[{label:'Головна',href:'/'},{label}];return <div className="container page-intro"><Breadcrumbs items={items}/><span className="eyebrow">VIKORA · {label.toUpperCase()}</span><h1>{title}</h1><p>{description}</p></div>}

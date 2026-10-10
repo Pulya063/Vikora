@@ -1,0 +1,26 @@
+{
+  "retrieved": "2026-10-09",
+  "images": {
+    "auto-ventilation.jpg": "https://luvin.ua/wp-content/uploads/2022/10/Avtomatychne-provitriuvannia-435x415.jpg",
+    "co2-sensor.jpg": "https://luvin.ua/wp-content/uploads/2022/10/Datchyk-vuhlekysloho-hazu-435x415.jpg",
+    "window-sensor.jpg": "https://luvin.ua/wp-content/uploads/2022/10/Datchyk-kontroliu-435x415.jpg",
+    "hidden-hardware.jpg": "https://luvin.ua/wp-content/uploads/2021/11/580-na-520-selekt-stysneno.jpg",
+    "low-handle.jpg": "https://luvin.ua/wp-content/uploads/2021/11/450-na-280-erho.jpg",
+    "perimeter-ventilation.jpg": "https://luvin.ua/wp-content/uploads/2022/10/Provitriuvannia-po-perymetru-435x415.jpg",
+    "pvc-door.jpg": "https://luvin.ua/wp-content/uploads/2022/10/MP-vkhidni.jpg",
+    "aluminium-door.jpg": "https://luvin.ua/wp-content/uploads/2022/10/Panelni-vkhidni.jpg",
+    "door-panel.png": "https://luvin.ua/wp-content/uploads/2021/11/1-4-445x350.png",
+    "decor-window.jpg": "https://luvin.ua/wp-content/uploads/2022/10/Vikna-zi-shprosamy.jpg",
+    "ebbs.webp": "https://viknaroff.ua/wp-content/uploads/2024/10/vidlivi-1.webp",
+    "door-l23.png": "https://luvin.ua/wp-content/uploads/2021/11/1-2-445x350.png",
+    "door-v31.png": "https://luvin.ua/wp-content/uploads/2021/11/1-3-445x350.png",
+    "winkhaus-fsv-child-lock.jpg": "https://www.wikipro.ru/images/5/5b/%D0%A4%D0%BE%D1%82%D0%BE_%D0%B7%D0%B0%D0%BC%D0%BA%D0%B0_1.jpg"
+  },
+  "handleColors": {
+    "/images/handles/bila.jpg": "https://luvin.ua/wp-content/uploads/2021/02/bila.jpg",
+    "/images/handles/korychneva.jpg": "https://luvin.ua/wp-content/uploads/2021/02/korychneva.jpg",
+    "/images/handles/sribna.jpg": "https://luvin.ua/wp-content/uploads/2021/02/sribna.jpg",
+    "/images/handles/bronza.jpg": "https://luvin.ua/wp-content/uploads/2021/02/bronza.jpg",
+    "/images/handles/staleva.jpg": "https://luvin.ua/wp-content/uploads/2021/02/staleva.jpg"
+  }
+}
