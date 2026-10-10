@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 import uuid
 from sqlalchemy import select, text
 from app.models import Lead, DeliveryJob
@@ -14,6 +15,9 @@ class LeadService:
     def __init__(self, session): self.session = session
 
     async def create(self, request, key):
+        # Also protect non-HTTP callers (bot/MCP) before any DB operation.
+        if not isinstance(key, str) or not re.fullmatch(r'[A-Za-z0-9_.:-]{8,80}', key):
+            raise ValueError('Некоректний ключ повторного запиту')
         digest = hashlib.sha256(json.dumps(request.model_dump(mode='json'), sort_keys=True).encode()).hexdigest()
         # Serialize concurrent repeats across web/bot/MCP processes.
         lock_id = int.from_bytes(hashlib.sha256(key.encode()).digest()[:8], 'big', signed=True)

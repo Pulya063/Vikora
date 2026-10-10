@@ -4,7 +4,7 @@ import technologies from '../../../backend/app/config/technologies.json';
 export { products, business, technologies };
 export type Product = typeof products[number];
 export const money = (n:number) => new Intl.NumberFormat('uk-UA').format(n);
-export const navigation = [ ['Асортимент','/assortment'], ['Комплектуючі','/accessories'], ['Про нас','/about'], ['Технології','/technologies'], ['Контакти','/contacts'], ['Соцмережі','/social'] ];
+export const navigation = [ ['Асортимент','/assortment'], ['Комплектуючі','/accessories'], ['Про нас','/about'], ['Технології','/technologies'], ['Контакти','/contacts'] ];
 export const categories = [
   {name:'Металопластикові вікна',detail:'Тепло, тиша й більше світла',image:'/images/category-window.jpg',href:'/assortment#windows'},
   {name:'Вхідні двері',detail:'Ваш дім починається тут',image:'/images/category-door.jpg',href:'/assortment#doors'},

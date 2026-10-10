@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:contract": "node --test tests/quote-contract.cjs tests/public-api-routes.cjs",
+    "test:forms": "playwright test --config=playwright.forms.config.ts",
     "dev": "next dev --hostname 127.0.0.1",
     "dev:lan": "node scripts/dev-lan.cjs",
     "build": "next build",

@@ -27,4 +27,4 @@ COPY --from=build --chown=node:node /app/frontend/.next ./.next
 COPY --from=build --chown=node:node /app/frontend/public ./public
 USER node
 EXPOSE 3000
-CMD ["node", "node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3000"]
+CMD ["sh", "-c", "exec node node_modules/next/dist/bin/next start --hostname 0.0.0.0 --port \"${PORT:-3000}\""]

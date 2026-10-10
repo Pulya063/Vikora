@@ -19,8 +19,36 @@ const finishes=[
 export function generateStaticParams(){return [...products,...doorProducts].map(p=>({id:p.id}))}
 export async function generateMetadata({params}:{params:Promise<{id:string}>}){const{id}=await params;return {title:[...products,...doorProducts].find(p=>p.id===id)?.name||'Виріб не знайдено',description:[...products,...doorProducts].find(p=>p.id===id)?.description}}
 
-function WindowShape({panes}:{panes:number}){
- return <div className={`construction-shape panes-${panes}`} aria-hidden="true">{Array.from({length:panes},(_,i)=><span key={i}>{i===Math.min(1,panes-1)&&<i/>}</span>)}</div>
+function WindowDrawing({panes,dimensions}:{panes:number;dimensions:string}){
+ const [width='—',height='—']=dimensions.match(/\d+/g)||[];
+ const drawingWidth=340;
+ const gap=7;
+ const paneWidth=(drawingWidth-gap*(panes-1))/panes;
+ const openingIndex=Math.min(1,panes-1);
+ const id=`window-${panes}`;
+ return <svg className="construction-drawing" viewBox="0 0 430 300" role="img" aria-label={`Технічне креслення: ${panes} секції, ${dimensions}`}>
+  <defs>
+   <linearGradient id={`${id}-frame`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffffff"/><stop offset=".48" stopColor="#e8e9e5"/><stop offset="1" stopColor="#bfc3bf"/></linearGradient>
+   <linearGradient id={`${id}-glass`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f5fbfc"/><stop offset=".52" stopColor="#dce9eb"/><stop offset="1" stopColor="#c6d7da"/></linearGradient>
+   <filter id={`${id}-shadow`} x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="#26332e" floodOpacity=".18"/></filter>
+   <marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#69746d"/></marker>
+  </defs>
+  <g filter={`url(#${id}-shadow)`}>
+   <rect x="44" y="29" width="342" height="211" rx="3" fill={`url(#${id}-frame)`} stroke="#8f9994" strokeWidth="2"/>
+   {Array.from({length:panes},(_,i)=>{const x=45+i*(paneWidth+gap);const isOpening=i===openingIndex;return <g key={i}>
+    <rect x={x+5} y="35" width={paneWidth-10} height="199" rx="1" fill={`url(#${id}-frame)`} stroke="#a7afaa" strokeWidth="1.5"/>
+    <rect x={x+13} y="43" width={paneWidth-26} height="183" rx="1" fill={`url(#${id}-glass)`} stroke="#9fb3b7" strokeWidth="1.4"/>
+    <path d={`M${x+18} 48 L${x+paneWidth-18} 48 L${x+18} 221 Z`} fill="#fff" opacity=".2"/>
+    {isOpening&&<><path d={`M${x+16} 222 L${x+paneWidth/2} 47 L${x+paneWidth-16} 222`} fill="none" stroke="#718785" strokeWidth="1.2" strokeDasharray="5 4"/><path d={`M${x+paneWidth-17} 48 L${x+17} 134 L${x+paneWidth-17} 222`} fill="none" stroke="#829695" strokeWidth="1.25"/><rect x={x+paneWidth-20} y="127" width="3" height="19" rx="1.5" fill="#626b67"/></>}
+   </g>})}
+   <path d="M40 241 H390" stroke="#8f9994" strokeWidth="3"/>
+  </g>
+  <g className="drawing-dimensions" fill="none" stroke="#69746d" strokeWidth="1">
+   <path d="M45 265 H385" markerStart={`url(#${id}-arrow)`} markerEnd={`url(#${id}-arrow)`}/><path d="M45 246 V273 M385 246 V273"/>
+   <path d="M410 31 V239" markerStart={`url(#${id}-arrow)`} markerEnd={`url(#${id}-arrow)`}/><path d="M391 31 H417 M391 239 H417"/>
+  </g>
+  <g className="drawing-labels" fill="#4f5b54"><text x="215" y="286" textAnchor="middle">{width} мм</text><text x="414" y="135" textAnchor="middle" transform="rotate(-90 414 135)">{height} мм</text></g>
+ </svg>
 }
 
 export default async function Page({params}:{params:Promise<{id:string}>}){
@@ -54,7 +82,7 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
 
   <section className="section construction-prices" id="prices"><div className="container">
    <div className="section-heading"><div><span className="eyebrow">ВАРТІСТЬ КОНСТРУКЦІЙ</span><h2>Приклади у стандартній комплектації</h2><p>Ціни дають орієнтир для типових розмірів. Точна вартість залежить від відкривання, склопакета, кольору, фурнітури й актуального прайсу.</p></div></div>
-   <div className="construction-grid">{p.constructionPrices.map((item,index)=><article key={item.dimensions}><WindowShape panes={index+1}/><span className="construction-type">{item.type}</span><h3>{item.dimensions}</h3><p>ціна від <strong>{money(item.price)} грн</strong></p><Link href={`/calculator?profile=${p.id}`}>Замовити розрахунок <ArrowUpRight size={15}/></Link></article>)}</div>
+   <div className="construction-grid">{p.constructionPrices.map((item,index)=><article key={item.dimensions}><WindowDrawing panes={index+1} dimensions={item.dimensions}/><span className="construction-type">{item.type}</span><h3>{item.dimensions}</h3><p>ціна від <strong>{money(item.price)} грн</strong></p><Link href={`/calculator?profile=${p.id}`}>Замовити розрахунок <ArrowUpRight size={15}/></Link></article>)}</div>
    <p className="price-disclaimer">Орієнтовні ціни взято з офіційної сторінки виробника. Монтаж і транспортування розраховуються окремо. {business.serviceNotice}</p>
   </div></section>
 

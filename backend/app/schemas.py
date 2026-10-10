@@ -3,7 +3,15 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, EmailStr, field_validator, model_validator
 
 class Strict(BaseModel):
-    model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
+    model_config = ConfigDict(extra='forbid', str_strip_whitespace=True, strict=True)
+
+    @field_validator('*', mode='before')
+    @classmethod
+    def safe_text(cls, value):
+        if isinstance(value, str):
+            if any((ord(c) < 32 and c not in '\t\n\r') or 0xD800 <= ord(c) <= 0xDFFF or ord(c) == 127 for c in value):
+                raise ValueError('Текст містить недопустимі символи')
+        return value
 
 class Dimensions(Strict):
     width_mm: int = Field(ge=400, le=3000)
@@ -43,26 +51,33 @@ class Configuration(Strict):
 
 class QuoteRequest(Strict):
     name: str = Field(min_length=2, max_length=100)
-    phone: str
-    email: EmailStr | None = None
+    phone: str = Field(max_length=40)
+    email: EmailStr | None = Field(default=None, max_length=254)
     city: str = Field(default='', max_length=120)
     preferred_contact: Literal['phone','Telegram','Viber','WhatsApp','email'] = 'phone'
     contact_handle: str = Field(default='', max_length=100)
     comment: str = Field(default='', max_length=2000)
     configuration: Configuration | None = None
-    pricing_version: str | None = None
+    pricing_version: str | None = Field(default=None, max_length=80)
     needs_delivery: bool = False
     needs_installation: bool = False
     consent: Literal[True]
     website: str = Field(default='', max_length=0)
 
+    @field_validator('consent', mode='before')
+    @classmethod
+    def explicit_consent(cls, value):
+        if value is not True:
+            raise ValueError('Потрібна згода на обробку даних')
+        return value
+
     @field_validator('phone')
     @classmethod
     def normalize_phone(cls, v):
         v = re.sub(r'[\s()\-]', '', v)
-        if re.fullmatch(r'0\d{9}', v):
+        if re.fullmatch(r'0[0-9]{9}', v):
             v = '+38' + v
-        if not re.fullmatch(r'\+380\d{9}', v):
+        if not re.fullmatch(r'\+380[0-9]{9}', v):
             raise ValueError('Вкажіть український номер +380XXXXXXXXX')
         return v
 

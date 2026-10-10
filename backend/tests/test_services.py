@@ -42,6 +42,7 @@ def test_incompatible_options():
     inactive=rules();inactive[0].active=False
     with pytest.raises(ValueError): PricingService.calculate(configuration(),inactive)
 
+@pytest.mark.integration
 @pytest.mark.asyncio(loop_scope='session')
 async def test_rest_lead_idempotency_and_outbox():
     async with AsyncClient(transport=ASGITransport(app=app),base_url='http://test') as client:
@@ -66,6 +67,7 @@ async def test_rest_lead_idempotency_and_outbox():
             assert await session.scalar(select(func.count()).select_from(DeliveryJob).where(DeliveryJob.lead_id==lead.id))==2
             assert not lead.telegram_sent and not lead.notion_synced
 
+@pytest.mark.integration
 @pytest.mark.asyncio(loop_scope='session')
 async def test_admin_access_and_transactional_audit(monkeypatch):
     monkeypatch.setattr(settings(),'telegram_admin_ids',[123456])
@@ -81,6 +83,7 @@ async def test_admin_access_and_transactional_audit(monkeypatch):
         assert audit.changed_by=='123456' and audit.old_value==old
         await session.rollback()
 
+@pytest.mark.integration
 @pytest.mark.asyncio(loop_scope='session')
 async def test_failed_integrations_keep_lead(monkeypatch):
     from app import worker
@@ -93,6 +96,7 @@ async def test_failed_integrations_keep_lead(monkeypatch):
         assert job and not job.done
         assert await session.get(Lead,job.lead_id)
 
+@pytest.mark.integration
 @pytest.mark.asyncio(loop_scope='session')
 async def test_mcp_and_rest_use_same_price():
     from app.mcp_server import calculate_estimated_price
@@ -101,6 +105,7 @@ async def test_mcp_and_rest_use_same_price():
         rest=(await client.post('/api/v1/calculator/estimate',json=configuration().model_dump())).json()
     assert result==rest
 
+@pytest.mark.integration
 @pytest.mark.asyncio(loop_scope='session')
 async def test_bot_calculator_and_duplicate_updates(monkeypatch):
     from app import bot

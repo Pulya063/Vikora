@@ -1,9 +1,11 @@
 """Supplier facts separated from display components. Prices are deliberately mock."""
 import json
+from functools import lru_cache
 from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent / 'config'
 
+@lru_cache(maxsize=8)
 def config(name):
     return json.loads((CONFIG_DIR / f'{name}.json').read_text(encoding='utf-8'))
 

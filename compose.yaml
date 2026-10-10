@@ -4,7 +4,13 @@ services:
       context: ./backend
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://vikora:vikora_local@db:5432/vikora}
+      DATABASE_SSL_MODE: ${DATABASE_SSL_MODE:-disable}
+      DATABASE_SSL_CA_FILE: ${DATABASE_SSL_CA_FILE:-}
+      TRUSTED_PROXY_IPS: ${TRUSTED_PROXY_IPS:-}
       APP_ENV: ${APP_ENV:-local}
+      ALLOWED_HOSTS: '${ALLOWED_HOSTS:-["localhost","127.0.0.1","app"]}'
+      MAX_IN_FLIGHT: ${MAX_IN_FLIGHT:-32}
+      REQUESTS_PER_MINUTE: ${REQUESTS_PER_MINUTE:-120}
       ALLOWED_ORIGINS: '${ALLOWED_ORIGINS:-["http://localhost:3000", "http://127.0.0.1:3000"]}'
       PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:3000}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
@@ -17,13 +23,30 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: ["sh", "-c", "alembic upgrade head && python -m app.seed && exec uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+    command: ["sh", "-c", "alembic upgrade head && python -m app.seed && exec python -m app.serve"]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
       interval: 10s
       timeout: 6s
       start_period: 30s
       retries: 10
+
+  worker:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://vikora:vikora_local@db:5432/vikora}
+      DATABASE_SSL_MODE: ${DATABASE_SSL_MODE:-disable}
+      DATABASE_SSL_CA_FILE: ${DATABASE_SSL_CA_FILE:-}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_MANAGER_CHAT_ID: ${TELEGRAM_MANAGER_CHAT_ID:-}
+      NOTION_TOKEN: ${NOTION_TOKEN:-}
+      NOTION_DATA_SOURCE_ID: ${NOTION_DATA_SOURCE_ID:-}
+    command: ["python", "-m", "app.worker"]
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
 
   front:
     build:
@@ -46,7 +69,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-vikora}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vikora_local}
       POSTGRES_DB: ${POSTGRES_DB:-vikora}
-    ports: ["55432:5432"]
+    ports: ["127.0.0.1:55432:5432"]
     volumes: ["vikora_db:/var/lib/postgresql/data"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]

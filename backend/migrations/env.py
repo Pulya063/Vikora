@@ -2,7 +2,7 @@ import asyncio
 from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 from app.core import settings
-from app.db import Base
+from app.db import Base, connection_options
 from app import models
 
 def apply(connection):
@@ -10,7 +10,8 @@ def apply(connection):
     with context.begin_transaction(): context.run_migrations()
 
 async def online():
-    engine = create_async_engine(settings().database_url)
+    url, options = connection_options()
+    engine = create_async_engine(url, connect_args=options)
     async with engine.connect() as connection: await connection.run_sync(apply)
     await engine.dispose()
 
