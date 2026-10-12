@@ -8,6 +8,11 @@
     "dev": "next dev --hostname 127.0.0.1",
     "dev:lan": "node scripts/dev-lan.cjs",
     "build": "next build",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "browser": "playwright-cli -s=vikora",
@@ -23,6 +28,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.10",
     "@playwright/cli": "^0.1.22",
     "@playwright/test": "^1.56.0",
     "@tailwindcss/postcss": "^4.1.0",
@@ -30,6 +36,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "wrangler": "^4.149.0"
   }
 }

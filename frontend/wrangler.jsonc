@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "vikora-web-local",
+  "compatibility_date": "2026-10-11",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-local" }],
+  "vars": {
+    "NEXTJS_ENV": "development"
+  },
+  "env": {
+    "staging": {
+      "name": "vikora-web-staging",
+      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-staging" }],
+      "vars": { "NEXTJS_ENV": "production" }
+    },
+    "production": {
+      "name": "vikora-web",
+      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web" }],
+      "vars": { "NEXTJS_ENV": "production" }
+    }
+  }
+}

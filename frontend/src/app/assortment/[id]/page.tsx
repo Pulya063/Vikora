@@ -5,7 +5,9 @@ import {productGuides} from '@/lib/catalogGuides';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {ArrowLeft,ArrowUpRight,Check} from 'lucide-react';
-import {products,business,money} from '@/lib/data';
+import {products,business} from '@/lib/data';
+import {PriceExamples,SamplePrice} from '@/components/PriceExamples';
+import {legacyBackend} from '@/lib/publicApi';
 
 const finishes=[
  {name:'Антрацит',color:'#3d4140'},
@@ -82,8 +84,8 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
 
   <section className="section construction-prices" id="prices"><div className="container">
    <div className="section-heading"><div><span className="eyebrow">ВАРТІСТЬ КОНСТРУКЦІЙ</span><h2>Приклади у стандартній комплектації</h2><p>Ціни дають орієнтир для типових розмірів. Точна вартість залежить від відкривання, склопакета, кольору, фурнітури й актуального прайсу.</p></div></div>
-   <div className="construction-grid">{p.constructionPrices.map((item,index)=><article key={item.dimensions}><WindowDrawing panes={index+1} dimensions={item.dimensions}/><span className="construction-type">{item.type}</span><h3>{item.dimensions}</h3><p>ціна від <strong>{money(item.price)} грн</strong></p><Link href={`/calculator?profile=${p.id}`}>Замовити розрахунок <ArrowUpRight size={15}/></Link></article>)}</div>
-   <p className="price-disclaimer">Орієнтовні ціни взято з офіційної сторінки виробника. Монтаж і транспортування розраховуються окремо. {business.serviceNotice}</p>
+   <PriceExamples><div className="construction-grid">{p.constructionPrices.map((item,index)=><article key={item.dimensions}><WindowDrawing panes={index+1} dimensions={item.dimensions}/><span className="construction-type">{item.type}</span><h3>{item.dimensions}</h3><SamplePrice profile={p.id} dimensions={item.dimensions} sections={index+1} legacyPrice={item.price}/><Link href={`/calculator?profile=${p.id}`}>Замовити розрахунок <ArrowUpRight size={15}/></Link></article>)}</div></PriceExamples>
+   <p className="price-disclaimer">{legacyBackend?'Орієнтовні ціни взято з офіційної сторінки виробника.':'Приклади розраховано за поточними цінами для білого вікна з енергозберігаючим склопакетом і однією відкривною стулкою.'} Монтаж і транспортування розраховуються окремо. {business.serviceNotice}</p>
   </div></section>
 
   <section className="section lamination-section"><div className="container lamination-layout">

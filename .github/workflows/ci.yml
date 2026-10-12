@@ -13,7 +13,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     services:
       postgres:
         image: postgres:17-alpine
@@ -47,11 +47,14 @@ jobs:
         with:
           node-version: "22"
           cache: pnpm
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          cache-dependency-path: |
+            frontend/pnpm-lock.yaml
+            cloudflare-backend/pnpm-lock.yaml
       - name: Install locked dependencies
         run: |
           python -m pip install -r backend/requirements.lock.txt
           pnpm --dir frontend install --frozen-lockfile
+          pnpm --dir cloudflare-backend install --frozen-lockfile
       - name: Check migrations on real PostgreSQL
         working-directory: backend
         run: |
@@ -67,6 +70,17 @@ jobs:
         run: |
           pnpm test:contract
           pnpm typecheck
+          pnpm build:cloudflare
+      - name: Cloudflare Worker types, lint, tests and D1 migrations
+        run: |
+          pnpm --dir cloudflare-backend typecheck
+          pnpm --dir cloudflare-backend lint
+          pnpm --dir cloudflare-backend test
+          pnpm --dir cloudflare-backend exec wrangler d1 migrations apply DB --local --persist-to .wrangler-ci
+      - name: Production dependency audit
+        run: |
+          pnpm --dir frontend audit --prod --audit-level=high
+          pnpm --dir cloudflare-backend audit --prod --audit-level=high
       - name: Browser tests with mocked API
         working-directory: frontend
         run: |

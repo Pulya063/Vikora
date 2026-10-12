@@ -1,10 +1,13 @@
+'use client';
 import Link from 'next/link';
 import {Mail, MessageCircle, Phone, Send} from 'lucide-react';
 import {Logo} from './Header';
 import {navigation, business} from '@/lib/data';
+import {usePublicContacts} from './ContactsProvider';
 
 export default function Footer() {
-  const phone = business.contacts.phone as string | null;
+  const {contacts}=usePublicContacts();
+  const phone = contacts.phone;
   const phoneHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : undefined;
 
   return <footer>
@@ -25,9 +28,9 @@ export default function Footer() {
       <address className="footer-contacts">
         <span className="footer-contact-title">ЗВ’ЯЗАТИСЯ</span>
         {phoneHref && <a href={phoneHref}><Phone size={15}/><span>{phone}</span></a>}
-        <a href="tg://resolve?phone=%2B380674243325"><Send size={15}/><span>Telegram</span></a>
-        <a href="viber://chat?number=%2B380674243325"><MessageCircle size={15}/><span>Viber</span></a>
-        <a href="mailto:vikora.info@gmail.com"><Mail size={15}/><span>vikora.info@gmail.com</span></a>
+        {contacts.telegram&&<a href={contacts.telegram}><Send size={15}/><span>Telegram</span></a>}
+        {contacts.viber&&<a href={contacts.viber}><MessageCircle size={15}/><span>Viber</span></a>}
+        {contacts.email&&<a href={`mailto:${contacts.email}`}><Mail size={15}/><span>{contacts.email}</span></a>}
       </address>
     </div>
     <div className="container footer-bottom">

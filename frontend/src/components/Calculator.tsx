@@ -3,6 +3,8 @@ import {useEffect,useState,useRef} from 'react';
 import {ArrowRight,Check,RotateCcw} from 'lucide-react';
 import {products,business,money} from '@/lib/data';
 import type {Configuration,Estimate} from '@/lib/types';
+import {apiUrl,legacyBackend,publicPaths} from '@/lib/publicApi';
+import {calculateEstimate,parseConfiguration,parseEstimate,parsePublicPrices} from '@/lib/pricing';
 import QuoteForm from './QuoteForm';
 const defaults:Configuration={product_type:'window',profile:'grand-pro',dimensions:{width_mm:1400,height_mm:1200},construction:'double',sections:2,opening:['fixed','tilt_turn'],glass_unit:'energy_saving',color:'white',extras:[],services_requested:{delivery:false,installation:false}};
 const constructions=[['fixed','Глухе',1],['single','Одностулкове',1],['double','Двостулкове',2],['triple','Тристулкове',3]] as const;
@@ -23,13 +25,17 @@ export default function Calculator(){
   const controller=new AbortController();pending.current=controller;const current=revision.current;
   const timeout=setTimeout(()=>controller.abort(),20000);setBusy(true);setError('');setEstimate(null);
   try{
-   const response=await fetch('/api/v1/calculator/estimate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(c),signal:controller.signal});
+   parseConfiguration(c);
+   const response=await fetch(apiUrl(legacyBackend?publicPaths.estimate:publicPaths.prices),legacyBackend
+    ?{method:'POST',signal:controller.signal,headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(c)}
+    :{signal:controller.signal,headers:{'Accept':'application/json'}});
    const result=await response.json().catch(()=>null);
    if(current!==revision.current)return;
    if(response.status===429||response.status===503){const seconds=Number(response.headers.get('Retry-After')||3);retryAt.current=Date.now()+Math.min(60,Math.max(1,Number.isFinite(seconds)?seconds:3))*1000}
-   if(!response.ok)throw new Error(result?.errors?.map((e:{message:string})=>e.message.replace('Value error, ','')).join(' ')||result?.detail||'Сервіс розрахунку тимчасово недоступний.');
+   if(!response.ok)throw new Error(result?.detail||'Сервіс розрахунку тимчасово недоступний.');
    if(!result)throw new Error('Сервіс розрахунку тимчасово недоступний.');
-   setEstimate(result);try{sessionStorage.setItem('vikora-estimate',JSON.stringify(result))}catch{}
+   const nextEstimate=legacyBackend?parseEstimate(result):calculateEstimate(c,parsePublicPrices(result));
+   setEstimate(nextEstimate);try{sessionStorage.setItem('vikora-estimate',JSON.stringify(nextEstimate))}catch{}
   }catch(e){if(current===revision.current)setError(controller.signal.aborted?'Час очікування вичерпано. Спробуйте ще раз.':e instanceof Error?e.message:'Сервіс недоступний. Спробуйте ще раз.')}
   finally{clearTimeout(timeout);if(pending.current===controller){pending.current=null;setBusy(false)}}
  }

@@ -1,0 +1,116 @@
+name: Deploy Cloudflare (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment environment
+        type: choice
+        options: [staging, production]
+        default: staging
+        required: true
+      confirm_deploy:
+        description: Apply remote D1 migrations and deploy the verified commit
+        type: boolean
+        default: false
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: inputs.confirm_deploy && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/ci.yml
+
+  deploy-api:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: "10"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: cloudflare-backend/pnpm-lock.yaml
+      - run: pnpm --dir cloudflare-backend install --frozen-lockfile
+      - name: Refuse placeholder infrastructure
+        env:
+          TARGET: ${{ inputs.target }}
+        run: |
+          if [ "$TARGET" = "staging" ]; then PATTERN='11111111-1111|staging\.example\.invalid'; else PATTERN='22222222-2222|https://example\.invalid'; fi
+          PATTERN="$PATTERN|vikora_admin_bot"
+          if grep -Eq "$PATTERN" cloudflare-backend/wrangler.jsonc; then
+            echo "Replace placeholder D1 IDs and origins before deployment."
+            exit 1
+          fi
+      - name: Require explicit repository gate
+        env:
+          DEPLOY_ENABLED: ${{ vars.CLOUDFLARE_DEPLOY_ENABLED }}
+        run: test "$DEPLOY_ENABLED" = "true"
+      - name: Apply migrations and deploy Worker
+        working-directory: cloudflare-backend
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          pnpm exec wrangler d1 migrations apply DB --remote --env "${{ inputs.target }}"
+          pnpm exec wrangler deploy --env "${{ inputs.target }}"
+      - name: Verify deployed API health
+        env:
+          API_URL: ${{ vars.API_URL }}
+        run: |
+          test -n "$API_URL"
+          case "$API_URL" in https://*) ;; *) echo "API_URL must use HTTPS"; exit 1;; esac
+          curl --fail --silent --show-error --retry 3 --retry-all-errors "$API_URL/health"
+
+  deploy-frontend:
+    needs: deploy-api
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: "10"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm --dir frontend install --frozen-lockfile
+      - name: Build and deploy Next.js Worker
+        working-directory: frontend
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          API_URL: ${{ vars.API_URL }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ vars.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_TURNSTILE_BYPASS: "false"
+          NEXT_PUBLIC_BACKEND_MODE: cloudflare
+          ALLOW_INDEXING: ${{ inputs.target == 'production' && 'true' || 'false' }}
+        run: |
+          test -n "$API_URL"
+          test -n "$NEXT_PUBLIC_SITE_URL"
+          test -n "$NEXT_PUBLIC_TURNSTILE_SITE_KEY"
+          test "$API_URL" = "$NEXT_PUBLIC_API_BASE_URL"
+          case "$API_URL" in https://*) ;; *) echo "API_URL must use HTTPS"; exit 1;; esac
+          case "$NEXT_PUBLIC_SITE_URL" in https://*) ;; *) echo "NEXT_PUBLIC_SITE_URL must use HTTPS"; exit 1;; esac
+          pnpm exec opennextjs-cloudflare build --env "${{ inputs.target }}"
+          pnpm exec opennextjs-cloudflare deploy --env "${{ inputs.target }}" -- --keep-vars --var "API_URL:$API_URL"
