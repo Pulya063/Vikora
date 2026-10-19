@@ -1,55 +1,187 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "vikora-api-local",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-10-11",
-  "compatibility_flags": ["nodejs_compat"],
-  "observability": { "enabled": true },
-  "ratelimits": [
-    { "name": "PUBLIC_RATE_LIMITER", "namespace_id": "42101", "simple": { "limit": 120, "period": 60 } },
-    { "name": "LEAD_RATE_LIMITER", "namespace_id": "42102", "simple": { "limit": 20, "period": 60 } }
-  ],
-  "vars": {
-    "APP_ENV": "local",
-    "ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000",
-    "TURNSTILE_BYPASS": "true",
-    "NOTION_DATA_SOURCE_ID": "",
-    "TELEGRAM_MANAGER_CHAT_ID": "",
-    "TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
-  },
-  "d1_databases": [{
-    "binding": "DB",
-    "database_name": "vikora-local",
-    "database_id": "00000000-0000-0000-0000-000000000000",
-    "migrations_dir": "migrations"
-  }],
-  "queues": {
-    "producers": [{ "binding": "EVENT_QUEUE", "queue": "vikora-events-local" }],
-    "consumers": [{ "queue": "vikora-events-local", "max_batch_size": 10, "max_batch_timeout": 5, "max_retries": 5, "dead_letter_queue": "vikora-events-dlq-local" }]
-  },
-  "triggers": { "crons": ["*/5 * * * *"] },
-  "env": {
-    "staging": {
-      "name": "vikora-api-staging",
-      "ratelimits": [
-        { "name": "PUBLIC_RATE_LIMITER", "namespace_id": "42111", "simple": { "limit": 120, "period": 60 } },
-        { "name": "LEAD_RATE_LIMITER", "namespace_id": "42112", "simple": { "limit": 20, "period": 60 } }
-      ],
-      "vars": { "APP_ENV": "staging", "ALLOWED_ORIGINS": "https://staging.example.invalid", "TURNSTILE_BYPASS": "false", "NOTION_DATA_SOURCE_ID": "", "TELEGRAM_MANAGER_CHAT_ID": "", "TELEGRAM_BOT_USERNAME": "vikora_admin_bot" },
-      "d1_databases": [{ "binding": "DB", "database_name": "vikora-staging", "database_id": "11111111-1111-1111-1111-111111111111", "migrations_dir": "migrations" }],
-      "queues": { "producers": [{ "binding": "EVENT_QUEUE", "queue": "vikora-events-staging" }], "consumers": [{ "queue": "vikora-events-staging", "max_batch_size": 10, "max_retries": 5, "dead_letter_queue": "vikora-events-dlq-staging" }] },
-      "triggers": { "crons": ["*/5 * * * *"] }
-    },
-    "production": {
-      "name": "vikora-api",
-      "ratelimits": [
-        { "name": "PUBLIC_RATE_LIMITER", "namespace_id": "42121", "simple": { "limit": 120, "period": 60 } },
-        { "name": "LEAD_RATE_LIMITER", "namespace_id": "42122", "simple": { "limit": 20, "period": 60 } }
-      ],
-      "vars": { "APP_ENV": "production", "ALLOWED_ORIGINS": "https://example.invalid", "TURNSTILE_BYPASS": "false", "NOTION_DATA_SOURCE_ID": "", "TELEGRAM_MANAGER_CHAT_ID": "", "TELEGRAM_BOT_USERNAME": "vikora_admin_bot" },
-      "d1_databases": [{ "binding": "DB", "database_name": "vikora-production", "database_id": "22222222-2222-2222-2222-222222222222", "migrations_dir": "migrations" }],
-      "queues": { "producers": [{ "binding": "EVENT_QUEUE", "queue": "vikora-events" }], "consumers": [{ "queue": "vikora-events", "max_batch_size": 10, "max_retries": 5, "dead_letter_queue": "vikora-events-dlq" }] },
-      "triggers": { "crons": ["*/5 * * * *"] }
-    }
-  }
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "vikora-api-local",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-10-19",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"observability": {
+		"enabled": true
+	},
+	"ratelimits": [
+		{
+			"name": "PUBLIC_RATE_LIMITER",
+			"namespace_id": "42101",
+			"simple": {
+				"limit": 120,
+				"period": 60
+			}
+		},
+		{
+			"name": "LEAD_RATE_LIMITER",
+			"namespace_id": "42102",
+			"simple": {
+				"limit": 20,
+				"period": 60
+			}
+		}
+	],
+	"vars": {
+		"APP_ENV": "local",
+		"ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000",
+		"TURNSTILE_BYPASS": "true",
+		"NOTION_DATA_SOURCE_ID": "",
+		"TELEGRAM_MANAGER_CHAT_ID": "",
+		"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+	},
+	"d1_databases": [
+		{
+			"binding": "vikora_db",
+			"database_name": "vikora_db",
+			"database_id": "6ab96508-1456-474e-91b6-8557eaeaac07",
+			"migrations_dir": "migrations",
+			"remote": true
+		}
+	],
+	"queues": {
+		"producers": [
+			{
+				"binding": "EVENT_QUEUE",
+				"queue": "vikora-events-local"
+			}
+		],
+		"consumers": [
+			{
+				"queue": "vikora-events-local",
+				"max_batch_size": 10,
+				"max_batch_timeout": 5,
+				"max_retries": 5,
+				"dead_letter_queue": "vikora-events-dlq-local"
+			}
+		]
+	},
+	"triggers": {
+		"crons": [
+			"*/5 * * * *"
+		]
+	},
+	"env": {
+		"staging": {
+			"name": "vikora-api-staging",
+			"ratelimits": [
+				{
+					"name": "PUBLIC_RATE_LIMITER",
+					"namespace_id": "42111",
+					"simple": {
+						"limit": 120,
+						"period": 60
+					}
+				},
+				{
+					"name": "LEAD_RATE_LIMITER",
+					"namespace_id": "42112",
+					"simple": {
+						"limit": 20,
+						"period": 60
+					}
+				}
+			],
+			"vars": {
+				"APP_ENV": "staging",
+				"ALLOWED_ORIGINS": "https://staging.example.invalid",
+				"TURNSTILE_BYPASS": "false",
+				"NOTION_DATA_SOURCE_ID": "",
+				"TELEGRAM_MANAGER_CHAT_ID": "",
+				"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "vikora-staging",
+					"database_id": "11111111-1111-1111-1111-111111111111",
+					"migrations_dir": "migrations"
+				}
+			],
+			"queues": {
+				"producers": [
+					{
+						"binding": "EVENT_QUEUE",
+						"queue": "vikora-events-staging"
+					}
+				],
+				"consumers": [
+					{
+						"queue": "vikora-events-staging",
+						"max_batch_size": 10,
+						"max_retries": 5,
+						"dead_letter_queue": "vikora-events-dlq-staging"
+					}
+				]
+			},
+			"triggers": {
+				"crons": [
+					"*/5 * * * *"
+				]
+			}
+		},
+		"production": {
+			"name": "vikora-api",
+			"ratelimits": [
+				{
+					"name": "PUBLIC_RATE_LIMITER",
+					"namespace_id": "42121",
+					"simple": {
+						"limit": 120,
+						"period": 60
+					}
+				},
+				{
+					"name": "LEAD_RATE_LIMITER",
+					"namespace_id": "42122",
+					"simple": {
+						"limit": 20,
+						"period": 60
+					}
+				}
+			],
+			"vars": {
+				"APP_ENV": "production",
+				"ALLOWED_ORIGINS": "https://example.invalid",
+				"TURNSTILE_BYPASS": "false",
+				"NOTION_DATA_SOURCE_ID": "",
+				"TELEGRAM_MANAGER_CHAT_ID": "",
+				"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "vikora-production",
+					"database_id": "22222222-2222-2222-2222-222222222222",
+					"migrations_dir": "migrations"
+				}
+			],
+			"queues": {
+				"producers": [
+					{
+						"binding": "EVENT_QUEUE",
+						"queue": "vikora-events"
+					}
+				],
+				"consumers": [
+					{
+						"queue": "vikora-events",
+						"max_batch_size": 10,
+						"max_retries": 5,
+						"dead_letter_queue": "vikora-events-dlq"
+					}
+				]
+			},
+			"triggers": {
+				"crons": [
+					"*/5 * * * *"
+				]
+			}
+		}
+	}
 }
