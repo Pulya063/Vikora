@@ -45,7 +45,7 @@ telegramRoutes.post('/webhook', async (context) => {
   try {
     const bot = createAdminBot(context.env);
     // The supported subset has been runtime-validated; other official update kinds are rejected.
-    await bot.handleUpdate(parsed.data as Parameters<typeof bot.handleUpdate>[0]);
+    await bot.handleUpdate(parsed.data as unknown as Parameters<typeof bot.handleUpdate>[0]);
     await finishTelegramUpdate(context.env.DB, parsed.data.update_id, claim.token, true);
     return context.json({ ok: true }, 200, { 'Cache-Control': 'no-store' });
   } catch {
