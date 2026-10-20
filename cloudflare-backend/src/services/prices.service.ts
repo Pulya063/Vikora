@@ -15,7 +15,7 @@ export async function publicPrices(rows: PriceRow[]): Promise<PublicPrices> {
   for (const row of active) (rules[row.category] ??= {})[row.key] = row.value_micros / MICROS;
   const fingerprint = active.map((row) => `${row.category}:${row.key}:${row.value_micros}:${row.version}`).join('|');
   const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fingerprint));
-  return { currency: 'UAH', is_mock: true, pricing_version: bytesToHex(digest).slice(0, 16), rules };
+  return { currency: 'UAH', is_mock: false, pricing_version: bytesToHex(digest).slice(0, 16), rules };
 }
 
 export function calculateEstimate(configuration: Configuration, prices: PublicPrices) {

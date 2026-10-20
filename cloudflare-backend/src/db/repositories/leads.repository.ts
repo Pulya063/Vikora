@@ -58,7 +58,7 @@ export async function createLead(db: D1Database, input: LeadInput, idempotencyKe
     supplier: estimate.supplier,
     estimated_product_price_uah: estimate.estimated_product_price_uah,
     pricing_version: estimate.pricing_version,
-    is_mock: true,
+    is_mock: estimate.is_mock,
   }) : null;
   const eventRows = (['telegram', 'notion'] as const).map((destination) => ({ id: crypto.randomUUID(), destination }));
   const insertLead = db.prepare(
