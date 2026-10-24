@@ -106,3 +106,9 @@ _to_delete/
 
 # Legacy FastAPI backend - kept locally only, not deployed (catalog lives in shared/catalog)
 backend/
+
+# Legacy Docker/Render tooling - kept locally only
+/compose.yaml
+/.dockerignore
+/scripts/
+/frontend/Dockerfile
