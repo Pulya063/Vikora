@@ -69,6 +69,9 @@
 	// Workers Builds previews (non-production branches). Previews do NOT inherit top-level
 	// settings; no queue consumers or crons here. Shares the local/test D1 database.
 	"previews": {
+		"observability": {
+			"enabled": true
+		},
 		"vars": {
 			"APP_ENV": "local",
 			"ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000,https://vikora-web-local.vikora-info.workers.dev",
