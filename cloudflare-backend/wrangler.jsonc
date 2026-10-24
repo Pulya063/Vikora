@@ -34,7 +34,7 @@
 		"NOTION_DATA_SOURCE_ID": "eb068d8c-f745-4f92-a76b-4f2b9d4dded1",
 		"PUBLIC_SITE_URL": "https://vikora-web-local.vikora-info.workers.dev",
 		"TELEGRAM_MANAGER_CHAT_ID": "",
-		"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+		"TELEGRAM_BOT_USERNAME": "Vikora_servis_bot"
 	},
 	"d1_databases": [
 		{
@@ -69,6 +69,9 @@
 	// Workers Builds previews (non-production branches). Previews do NOT inherit top-level
 	// settings; no queue consumers or crons here. Shares the local/test D1 database.
 	"previews": {
+		"observability": {
+			"enabled": true
+		},
 		"vars": {
 			"APP_ENV": "local",
 			"ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000,https://vikora-web-local.vikora-info.workers.dev",
@@ -76,7 +79,7 @@
 			"NOTION_DATA_SOURCE_ID": "",
 			"PUBLIC_SITE_URL": "https://vikora-web-local.vikora-info.workers.dev",
 			"TELEGRAM_MANAGER_CHAT_ID": "",
-			"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+			"TELEGRAM_BOT_USERNAME": "Vikora_servis_bot"
 		},
 		"d1_databases": [
 			{
@@ -122,7 +125,7 @@
 				"TURNSTILE_BYPASS": "false",
 				"NOTION_DATA_SOURCE_ID": "",
 				"TELEGRAM_MANAGER_CHAT_ID": "",
-				"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+				"TELEGRAM_BOT_USERNAME": "Vikora_servis_bot"
 			},
 			"d1_databases": [
 				{
@@ -180,7 +183,7 @@
 				"TURNSTILE_BYPASS": "false",
 				"NOTION_DATA_SOURCE_ID": "",
 				"TELEGRAM_MANAGER_CHAT_ID": "",
-				"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+				"TELEGRAM_BOT_USERNAME": "Vikora_servis_bot"
 			},
 			"d1_databases": [
 				{
