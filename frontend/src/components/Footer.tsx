@@ -17,13 +17,13 @@ export default function Footer() {
         <p>Більше тепла.<br/>Більше можливостей.</p>
       </div>
       <nav aria-label="Навігація внизу">
-        {navigation.map(([name, href]) => <Link key={href} href={href}>{name}</Link>)}
-        <Link href="/calculator">Калькулятор</Link>
+        {navigation.map(([name, href]) => <Link prefetch={false} key={href} href={href}>{name}</Link>)}
+        <Link prefetch={false} href="/calculator">Калькулятор</Link>
       </nav>
       <div className="footer-service">
         <p>Вінницька область</p>
         <p>{business.supplier.wording}</p>
-        <Link href="/contacts#quote">Залишити заявку ↗</Link>
+        <Link prefetch={false} href="/contacts#quote">Залишити заявку ↗</Link>
       </div>
       <address className="footer-contacts">
         <span className="footer-contact-title">ЗВ’ЯЗАТИСЯ</span>
@@ -36,7 +36,7 @@ export default function Footer() {
     <div className="container footer-bottom">
       <span>© {new Date().getFullYear()} VIKORA</span>
       <span>Попередній розрахунок уточнює менеджер</span>
-      <Link href="/privacy">Конфіденційність</Link>
+      <Link prefetch={false} href="/privacy">Конфіденційність</Link>
     </div>
   </footer>;
 }

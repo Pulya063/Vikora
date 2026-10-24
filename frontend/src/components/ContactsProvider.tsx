@@ -19,11 +19,11 @@ export default function ContactsProvider({initial,children}:{initial:ContactsSna
       }catch{if(!stopped)setSnapshot(old=>({contacts:Date.now()-old.fetchedAt<120000?old.contacts:emptyContacts,stale:true,fetchedAt:old.fetchedAt}));}
       finally{clearTimeout(timeout);pending=null;}
     }
-    if(initial.stale||Date.now()-initial.fetchedAt>=60000)void refresh();
-    const interval=setInterval(()=>{void refresh()},60000);
-    const onVisible=()=>{void refresh()};
-    document.addEventListener('visibilitychange',onVisible);window.addEventListener('focus',onVisible);
-    return()=>{stopped=true;pending?.abort();clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);window.removeEventListener('focus',onVisible)};
+    // Contacts change only via the Telegram admin webhook; the server renders fresh
+    // contacts on every navigation. Re-fetch once only if the SSR snapshot failed —
+    // no interval/focus polling, which kept hitting the API and D1 for nothing.
+    if(initial.stale)void refresh();
+    return()=>{stopped=true;pending?.abort()};
   },[initial.fetchedAt,initial.stale]);
   return <Context.Provider value={snapshot}>{children}</Context.Provider>;
 }

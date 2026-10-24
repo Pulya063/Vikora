@@ -31,9 +31,22 @@ export default {
       catch { message.retry({ delaySeconds: 60 }); }
     }
   },
+  // Hourly safety net only. Telegram updates arrive via webhook (stale leases are
+  // re-claimed when Telegram redelivers), and leads are dispatched on creation.
+  // When there is nothing to repair this costs one read and zero writes.
   async scheduled(_controller: ScheduledController, env: Env, context: ExecutionContext): Promise<void> {
-    context.waitUntil(recoverOutbox(env));
-    context.waitUntil(env.DB.prepare(`DELETE FROM rate_limits WHERE expires_at < unixepoch('now')`).run());
-    context.waitUntil(env.DB.prepare(`UPDATE telegram_updates SET status='failed',locked_until=NULL,last_error_code='stale_lease' WHERE status='processing' AND locked_until < strftime('%Y-%m-%dT%H:%M:%fZ','now')`).run());
+    context.waitUntil(runMaintenance(env));
   },
 };
+
+export async function runMaintenance(env: Env): Promise<void> {
+  const now = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
+  const due = await env.DB.prepare(`SELECT
+      EXISTS(SELECT 1 FROM outbox_events WHERE (status='processing' AND locked_until<=${now})
+        OR (status IN ('pending','failed') AND available_at<=${now})
+        OR (status='queued' AND updated_at<strftime('%Y-%m-%dT%H:%M:%fZ','now','-10 minutes'))) AS outbox,
+      EXISTS(SELECT 1 FROM rate_limits WHERE expires_at < unixepoch('now')) AS rate_limits`)
+    .first<{ outbox: number; rate_limits: number }>();
+  if (due?.outbox) await recoverOutbox(env);
+  if (due?.rate_limits) await env.DB.prepare(`DELETE FROM rate_limits WHERE expires_at < unixepoch('now')`).run();
+}

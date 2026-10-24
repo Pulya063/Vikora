@@ -36,7 +36,7 @@ export default function HandleOptions() {
             {selected.id===color.id&&<Check className="handle-selected-check" size={16} aria-hidden="true"/>}
           </button>)}</div></fieldset>
           <div className="handle-color-description" aria-live="polite" aria-atomic="true"><h3>{selected.name}</h3><p>{selected.description}</p></div>
-          <Link className="button" href={`/contacts?interest=${encodeURIComponent('Віконна ручка — колір: '+selected.name)}#quote`}>Хочу цей колір <ArrowUpRight size={18}/></Link>
+          <Link prefetch={false} className="button" href={`/contacts?interest=${encodeURIComponent('Віконна ручка — колір: '+selected.name)}#quote`}>Хочу цей колір <ArrowUpRight size={18}/></Link>
           <p className="caption">Відтінки на екрані орієнтовні. Колір і наявність для конкретної моделі підтвердимо за зразком.</p>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default function HandleOptions() {
       <div className="section-heading"><div><span className="eyebrow">02 / СТИЛІ ТА РОЗТАШУВАННЯ</span><h2 id="handle-types-title">Три рішення для різних потреб.</h2><p>Порівняйте вигляд, спосіб користування та особливості встановлення.</p></div></div>
       <div className="handle-type-grid">{handleTypes.map(type=><article className={`handle-type-card handle-type-${type.id}`} key={type.id}>
         <img className="handle-type-photo" src={type.image} alt={type.alt} width={600} height={450} loading="lazy"/>
-        <div className="handle-type-copy"><h3>{type.name}</h3><p>{type.description}</p><p className="handle-type-detail">{type.detail}</p><Link className="text-link" href={`/contacts?interest=${encodeURIComponent(type.name)}#quote`}>Підібрати таку ручку <ArrowUpRight size={16}/></Link><p className="source-note">Приклад: <a href={type.source} target="_blank" rel="noreferrer">{type.credit} ↗</a></p></div>
+        <div className="handle-type-copy"><h3>{type.name}</h3><p>{type.description}</p><p className="handle-type-detail">{type.detail}</p><Link prefetch={false} className="text-link" href={`/contacts?interest=${encodeURIComponent(type.name)}#quote`}>Підібрати таку ручку <ArrowUpRight size={16}/></Link><p className="source-note">Приклад: <a href={type.source} target="_blank" rel="noreferrer">{type.credit} ↗</a></p></div>
       </article>)}</div>
     </section>
   </div>;

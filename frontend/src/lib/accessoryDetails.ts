@@ -13,11 +13,14 @@ export const accessoryDetails: Record<string, {
     source: 'https://luvin.ua/uk/catalog-category/pidvikonnia/',
     points: ['Потрібну глибину визначаємо за прорізом і розташуванням радіатора.', 'Колір і покриття узгоджуємо з вікном та інтер’єром.', 'Торцеві заглушки й монтаж обговорюємо окремо.'],
     variants: [
-      {name:'Kraft',image:'/images/accessories/sill-kraft.jpg',description:'Практичний варіант із матовою поверхнею та вибором декорів під дерево. Декор добираємо за зразком під ваш інтер’єр.',specifications:['Глибина 100–600 мм, крок 50 мм','Довжина до 6 000 мм','Білий, антрацит і декори під дерево'],colors:[
-        {name:'Білий',swatch:'linear-gradient(135deg,#fff,#deded8)'},
-        {name:'Антрацит',swatch:'linear-gradient(135deg,#555a57,#292e2b)'},
-        {name:'Золотий дуб',swatch:'repeating-linear-gradient(12deg,#c39154 0 4px,#8c5c2f 5px 8px)'},
-        {name:'Горіх',swatch:'repeating-linear-gradient(12deg,#76503a 0 4px,#3f291f 5px 8px)'}
+      {name:'Kraft',image:'/images/accessories/sills/kraft-luvin.jpg',description:'Практичне підвіконня з матовою поверхнею та декорами під дерево. Захисна плівка WINSHIELD стійка до плям і проста в догляді.',specifications:['Глибина 100–600 мм, крок 50 мм','Довжина до 6 000 мм','Товщина 20 мм, плівка WINSHIELD'],colors:[
+        {name:'Білий',image:'/images/accessories/sills/luvin/kraft-bilyj-445x350.jpg',swatch:'linear-gradient(135deg,#fff,#deded8)'},
+        {name:'Антрацит',image:'/images/accessories/sills/luvin/kraft-antratsyt-445x350.jpg',swatch:'linear-gradient(135deg,#555a57,#292e2b)'},
+        {name:'Полярний дуб',image:'/images/accessories/sills/luvin/krafy-poliarnyj-dub-445x350.jpg',swatch:'repeating-linear-gradient(12deg,#e6e3da 0 4px,#c9c5ba 5px 8px)'},
+        {name:'Горіх',image:'/images/accessories/sills/luvin/Kraft-horikh-445x350.jpg',swatch:'repeating-linear-gradient(12deg,#76503a 0 4px,#3f291f 5px 8px)'},
+        {name:'Золотий дуб',image:'/images/accessories/sills/luvin/Kraft-zolotyj-dub-445x350.jpg',swatch:'repeating-linear-gradient(12deg,#c39154 0 4px,#8c5c2f 5px 8px)'},
+        {name:'Сірий дуб',image:'/images/accessories/sills/luvin/kraft-siryj-dub-445x350.jpg',swatch:'repeating-linear-gradient(12deg,#a9a69e 0 4px,#7c7972 5px 8px)'},
+        {name:'Темний дуб',image:'/images/accessories/sills/luvin/temnyj-dub-445x350.jpg',swatch:'repeating-linear-gradient(12deg,#5a4130 0 4px,#2e2119 5px 8px)'}
       ],source:'https://luvin.ua/uk/catalog/pidvikonnia-kraft/'},
       {name:'Plastolit',image:'/images/accessories/sill-plastolit.jpg',description:'Елегантні підвіконня із заокругленим капіносом. Покриття та рекомендації з догляду уточнюємо для обраного декору.',specifications:['Глибина 100–600 мм, крок 50 мм','Довжина до 6 000 мм','Варіанти під дерево й мармур'],colors: [
         {name:'Білий',image:'/images/accessories/plastolit/belyy-445x350.png',swatch:'linear-gradient(135deg,#fff,#e2e2dc)'},
@@ -31,11 +34,11 @@ export const accessoryDetails: Record<string, {
         {name:'Рустикальний дуб',image:'/images/accessories/plastolit/rustikalnyy-dub-445x350.png',swatch:'repeating-linear-gradient(12deg,#8b5b31 0 4px,#4d2d18 5px 8px)'},
         {name:'Білий дуб',image:'/images/accessories/plastolit/belyy-dub-445x350.jpg',swatch:'repeating-linear-gradient(12deg,#d4c8b5 0 4px,#9e907c 5px 8px)'}
       ],source:'https://luvin.ua/uk/catalog/pidvikonnia-plastolit/'},
-      {name:'Crystalit',image:'/images/accessories/sill-crystalit.jpg',description:'Преміальне глянцеве підвіконня із двошаровим акриловим покриттям Elesgo. Варіант для інтер’єрів, де важливий блиск поверхні.',specifications:['Глибина 100–700 мм, крок 50 мм','Довжина до 6 000 мм','Ідеально рівна поверхня'],colors:[
-        {name:'Білий глянець',swatch:'linear-gradient(135deg,#fff 0 42%,#dfe6e5 48%,#fff 58%)'},
-        {name:'Перламутр',swatch:'linear-gradient(135deg,#eee9df,#fff 38%,#d9e1de 53%,#f6eee8)'},
-        {name:'Світлий камінь',swatch:'linear-gradient(145deg,#d5d1c7,#f1eee5 43%,#a9a69f 45%,#e7e3da 48%)'},
-        {name:'Темний камінь',swatch:'linear-gradient(145deg,#303431,#62655f 43%,#a7a69d 45%,#3b3f3b 48%)'}
+      {name:'Crystalit',image:'/images/accessories/sills/crystalit-luvin.jpg',description:'Преміальне глянцеве підвіконня із двошаровим акриловим покриттям Elesgo. Варіант для інтер’єрів, де важливий блиск поверхні.',specifications:['Глибина 100–700 мм, крок 50 мм','Довжина до 6 000 мм','Товщина 20 мм, глянцеве покриття Elesgo'],colors:[
+        {name:'Білий',image:'/images/accessories/sills/luvin/Krystalit-bilyj-445x350.jpg',swatch:'linear-gradient(135deg,#fff 0 42%,#dfe6e5 48%,#fff 58%)'},
+        {name:'Санторіні',image:'/images/accessories/sills/luvin/440-na-350-krystalit-santorini--445x350.jpg',swatch:'linear-gradient(145deg,#cfd0cc,#eceeea 42%,#9fa29e 44%,#e1e3df 47%)'},
+        {name:'Онікс',image:'/images/accessories/sills/luvin/440-na-350-oniks-krystalit--445x350.jpg',swatch:'linear-gradient(145deg,#2b2d2c,#4a4c4a 42%,#8d8f8a 44%,#363836 47%)'},
+        {name:'Бельмонте',image:'/images/accessories/sills/luvin/belmonte-krystalit-440-350-445x350.jpg',swatch:'linear-gradient(145deg,#d9c8ad,#efe4d1 42%,#b39d7e 44%,#e6d8c0 47%)'}
       ],source:'https://luvin.ua/uk/catalog/pidvikonnia-crystalit/'}
     ]
   },

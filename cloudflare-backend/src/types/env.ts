@@ -18,6 +18,8 @@ export interface Env {
   TELEGRAM_BOT_USERNAME?: string;
   TELEGRAM_WEBHOOK_SECRET?: string;
   TELEGRAM_MANAGER_CHAT_ID?: string;
+  /** Public website origin (https) used for bot link buttons. */
+  PUBLIC_SITE_URL?: string;
   NOTION_TOKEN?: string;
   NOTION_DATA_SOURCE_ID?: string;
 }

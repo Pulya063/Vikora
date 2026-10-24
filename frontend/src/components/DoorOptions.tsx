@@ -13,7 +13,7 @@ export default function DoorOptions() {
       const interest=`ПВХ вхідні двері — панель ${item.id}, декор ${item.finish}. Прошу розрахувати цей варіант.`;
       return <article className="door-model-card" key={item.id}>
       <img src={item.image} alt={`Візуалізація вхідних ПВХ-дверей, панель ${item.id}, ${item.finish}`} width={1456} height={1092} loading="lazy"/>
-      <div><span className="eyebrow">ПАНЕЛЬ {item.id}</span><h3>{item.finish}</h3><p>{item.description}</p><Link className="button secondary" aria-label={`Розрахувати двері з панеллю ${item.id}`} href={`/contacts?interest=${encodeURIComponent(interest)}#quote`}>Отримати розрахунок <ArrowUpRight size={17}/></Link></div>
+      <div><span className="eyebrow">ПАНЕЛЬ {item.id}</span><h3>{item.finish}</h3><p>{item.description}</p><Link prefetch={false} className="button secondary" aria-label={`Розрахувати двері з панеллю ${item.id}`} href={`/contacts?interest=${encodeURIComponent(interest)}#quote`}>Отримати розрахунок <ArrowUpRight size={17}/></Link></div>
     </article>})}</div><p className="source-note door-visual-note">Візуалізації показують характер оформлення. Точний колір, рисунок декору, скління та пропорції погоджуємо для обраної конструкції.</p>
     <p className="source-note">Фото панелей та характеристики профілів: <a href="https://luvin.ua/uk/catalog/vkhidni-metaloplastykovi-dveri-luvin/" target="_blank" rel="noreferrer">каталог LUVIN ↗</a>. Доступність декору й моделі уточнюємо перед замовленням.</p>
   </div></section>;

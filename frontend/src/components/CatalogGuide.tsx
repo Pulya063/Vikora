@@ -14,7 +14,7 @@ export default function CatalogGuide({guide, interest}: {guide: Guide; interest:
     </div></section>
     <section className="section catalog-cta"><div className="container split">
       <div><span className="eyebrow">НАСТУПНИЙ КРОК</span><h2>{guide.cta}</h2><p>Розкажіть про свій простір. Уточнимо сумісність, запропонуємо комплектацію та погодимо розрахунок.</p></div>
-      <div><Link className="button" href={`/contacts?interest=${encodeURIComponent(interest)}#quote`}>Отримати консультацію <ArrowUpRight size={18}/></Link><p className="caption">Вінницька область. Доставка й монтаж — за погодженням.</p><Link className="text-link" href="/accessories">Доповнити комплектуючими <ArrowUpRight size={16}/></Link></div>
+      <div><Link prefetch={false} className="button" href={`/contacts?interest=${encodeURIComponent(interest)}#quote`}>Отримати консультацію <ArrowUpRight size={18}/></Link><p className="caption">Вінницька область. Доставка й монтаж — за погодженням.</p><Link prefetch={false} className="text-link" href="/accessories">Доповнити комплектуючими <ArrowUpRight size={16}/></Link></div>
     </div></section>
   </>;
 }

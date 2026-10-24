@@ -15,6 +15,57 @@ function parseData(session: { data_json: string }): Record<string, unknown> {
   try { return JSON.parse(session.data_json) as Record<string, unknown>; } catch { return {}; }
 }
 
+const ADMIN_COMMANDS = ['/prices', '/leads', '/status', '/cancel'];
+const PUBLIC_CONTACT_LABELS: Record<string, string> = { phone: 'Телефон', email: 'Email', address: 'Адреса' };
+
+function siteUrl(env: Env, path: string): string | null {
+  try {
+    const base = new URL(env.PUBLIC_SITE_URL ?? '');
+    return base.protocol === 'https:' ? new URL(path, base).toString() : null;
+  } catch { return null; }
+}
+
+function publicKeyboard(env: Env): InlineKeyboard {
+  const keyboard = new InlineKeyboard();
+  const calculator = siteUrl(env, '/calculator');
+  const quote = siteUrl(env, '/contacts#quote');
+  if (calculator) keyboard.url('Розрахувати вартість', calculator).row();
+  if (quote) keyboard.url('Залишити заявку', quote).row();
+  return keyboard.text('Контакти', 'public:contacts');
+}
+
+async function publicContactsText(env: Env): Promise<string> {
+  const rows = await contactRows(env.DB);
+  const lines = rows
+    .filter((row) => row.value && PUBLIC_CONTACT_LABELS[row.key])
+    .map((row) => `${PUBLIC_CONTACT_LABELS[row.key]}: ${row.value}`);
+  return lines.length ? `Контакти VIKORA\n\n${lines.join('\n')}` : 'Контакти скоро з’являться. Залиште заявку на сайті — ми зв’яжемося з вами.';
+}
+
+/** Replies for users who are not in bot_admins. Never exposes admin data or actions. */
+async function handlePublic(env: Env, ctx: Context): Promise<void> {
+  if (ctx.callbackQuery) {
+    if (ctx.callbackQuery.data === 'public:contacts') {
+      await ctx.reply(await publicContactsText(env), { reply_markup: publicKeyboard(env) });
+      await ctx.answerCallbackQuery();
+    } else {
+      await ctx.answerCallbackQuery('Ця дія доступна лише адміністраторам.');
+    }
+    return;
+  }
+  const text = ctx.message?.text?.trim() ?? '';
+  const command = text.startsWith('/') ? text.split(/[\s@]/, 1)[0]!.toLowerCase() : '';
+  if (command === '/contacts') {
+    await ctx.reply(await publicContactsText(env), { reply_markup: publicKeyboard(env) });
+  } else if (ADMIN_COMMANDS.includes(command)) {
+    await ctx.reply('Ця команда доступна лише адміністраторам.', { reply_markup: publicKeyboard(env) });
+  } else if (command === '/start') {
+    await ctx.reply('Вітаємо у VIKORA! Металопластикові вікна та двері у Вінниці та області.\n\nРозрахуйте орієнтовну вартість або залиште заявку на сайті — менеджер зв’яжеться з вами.', { reply_markup: publicKeyboard(env) });
+  } else {
+    await ctx.reply('Я бот VIKORA. Оберіть дію нижче або залиште заявку на сайті — менеджер відповість вам.', { reply_markup: publicKeyboard(env) });
+  }
+}
+
 export function createAdminBot(env: Env): Bot {
   if (!env.TELEGRAM_BOT_TOKEN) throw new Error('telegram_not_configured');
   const [botId, username] = [env.TELEGRAM_BOT_TOKEN.split(':', 1)[0], env.TELEGRAM_BOT_USERNAME];
@@ -30,10 +81,10 @@ export function createAdminBot(env: Env): Bot {
   });
   bot.catch(({ error }) => { throw error; });
   bot.use(async (ctx, next) => {
-    if (ctx.chat?.type !== 'private' || !ctx.from || ctx.chat.id !== ctx.from.id || !await isAdmin(env.DB, ctx.from.id)) {
-      return;
-    }
-    await next();
+    if (ctx.chat?.type !== 'private' || !ctx.from || ctx.chat.id !== ctx.from.id) return;
+    // Admins get the closed dashboard below; everyone else only the public replies.
+    if (await isAdmin(env.DB, ctx.from.id)) { await next(); return; }
+    await handlePublic(env, ctx);
   });
 
   const showPrices = async (ctx: Context) => {

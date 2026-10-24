@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "vikora-api-local",
+	"name": "vikora-api",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-10-19",
 	"compatibility_flags": [
@@ -29,19 +29,19 @@
 	],
 	"vars": {
 		"APP_ENV": "local",
-		"ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000",
+		"ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001,http://localhost:8788,http://127.0.0.1:8788,https://vikora-web-local.vikora-info.workers.dev",
 		"TURNSTILE_BYPASS": "true",
-		"NOTION_DATA_SOURCE_ID": "",
+		"NOTION_DATA_SOURCE_ID": "eb068d8c-f745-4f92-a76b-4f2b9d4dded1",
+		"PUBLIC_SITE_URL": "https://vikora-web-local.vikora-info.workers.dev",
 		"TELEGRAM_MANAGER_CHAT_ID": "",
 		"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
 	},
 	"d1_databases": [
 		{
-			"binding": "vikora_db",
+			"binding": "DB",
 			"database_name": "vikora_db",
 			"database_id": "6ab96508-1456-474e-91b6-8557eaeaac07",
-			"migrations_dir": "migrations",
-			"remote": true
+			"migrations_dir": "migrations"
 		}
 	],
 	"queues": {
@@ -63,7 +63,7 @@
 	},
 	"triggers": {
 		"crons": [
-			"*/5 * * * *"
+			"0 * * * *"
 		]
 	},
 	"env": {
@@ -89,7 +89,7 @@
 			],
 			"vars": {
 				"APP_ENV": "staging",
-				"ALLOWED_ORIGINS": "https://staging.example.invalid",
+				"ALLOWED_ORIGINS": "https://vikora-web-staging.vikora-info.workers.dev",
 				"TURNSTILE_BYPASS": "false",
 				"NOTION_DATA_SOURCE_ID": "",
 				"TELEGRAM_MANAGER_CHAT_ID": "",
@@ -121,12 +121,12 @@
 			},
 			"triggers": {
 				"crons": [
-					"*/5 * * * *"
+					"0 * * * *"
 				]
 			}
 		},
 		"production": {
-			"name": "vikora-api",
+			"name": "vikora-api-prod",
 			"ratelimits": [
 				{
 					"name": "PUBLIC_RATE_LIMITER",
@@ -147,7 +147,7 @@
 			],
 			"vars": {
 				"APP_ENV": "production",
-				"ALLOWED_ORIGINS": "https://example.invalid",
+				"ALLOWED_ORIGINS": "https://vikora-web.vikora-info.workers.dev",
 				"TURNSTILE_BYPASS": "false",
 				"NOTION_DATA_SOURCE_ID": "",
 				"TELEGRAM_MANAGER_CHAT_ID": "",
@@ -179,7 +179,7 @@
 			},
 			"triggers": {
 				"crons": [
-					"*/5 * * * *"
+					"0 * * * *"
 				]
 			}
 		}

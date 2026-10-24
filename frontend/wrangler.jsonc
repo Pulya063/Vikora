@@ -5,19 +5,29 @@
   "compatibility_date": "2026-10-11",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
-  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-local" }],
+  // BACKEND = API Worker, called directly via service binding (src/lib/backendProxy.ts)
+  "services": [
+    { "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-local" },
+    { "binding": "BACKEND", "service": "vikora-api" }
+  ],
   "vars": {
     "NEXTJS_ENV": "development"
   },
   "env": {
     "staging": {
       "name": "vikora-web-staging",
-      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-staging" }],
+      "services": [
+        { "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-staging" },
+        { "binding": "BACKEND", "service": "vikora-api-staging" }
+      ],
       "vars": { "NEXTJS_ENV": "production" }
     },
     "production": {
       "name": "vikora-web",
-      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web" }],
+      "services": [
+        { "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web" },
+        { "binding": "BACKEND", "service": "vikora-api-prod" }
+      ],
       "vars": { "NEXTJS_ENV": "production" }
     }
   }

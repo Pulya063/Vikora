@@ -1,9 +1,8 @@
 FROM node:22-bookworm-slim AS build
 WORKDIR /app/frontend
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm install --global pnpm@10
-COPY frontend/package.json frontend/pnpm-lock.yaml frontend/pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
 COPY frontend/ ./
 # Static pages import the shared catalog directly from the backend.
 COPY backend/app/config/ /app/backend/app/config/
@@ -20,8 +19,8 @@ ENV API_URL=$API_URL \
     NEXT_PUBLIC_TURNSTILE_BYPASS=$NEXT_PUBLIC_TURNSTILE_BYPASS \
     NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     ALLOW_INDEXING=$ALLOW_INDEXING
-RUN pnpm build
-RUN pnpm prune --prod
+RUN npm run build
+RUN npm prune --omit=dev
 
 FROM node:22-bookworm-slim AS runtime
 WORKDIR /app/frontend

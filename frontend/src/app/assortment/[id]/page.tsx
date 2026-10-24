@@ -58,12 +58,12 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
  return <main id="main" className="product-page">
   <section className="product-hero container">
    <div className="product-hero-copy">
-    <Link className="back-link" href="/assortment"><ArrowLeft size={15}/> Усі вікна</Link>
+    <Link prefetch={false} className="back-link" href="/assortment"><ArrowLeft size={15}/> Усі вікна</Link>
     <span className="eyebrow">ПРОФІЛЬНА СИСТЕМА {p.supplier}</span>
     <h1>{p.name}</h1>
     <p className="product-lead">{p.description}</p>
     <ul className="benefit-checks">{p.benefits.map(item=><li key={item}><Check size={17}/>{item}</li>)}</ul>
-    <div className="product-hero-actions"><Link className="button" href={'/calculator?profile='+p.id}>Розрахувати своє вікно <ArrowUpRight size={17}/></Link><a className="text-link" href="#prices">Орієнтовні ціни</a></div>
+    <div className="product-hero-actions"><Link prefetch={false} className="button" href={'/calculator?profile='+p.id}>Розрахувати своє вікно <ArrowUpRight size={17}/></Link><a className="text-link" href="#prices">Орієнтовні ціни</a></div>
    </div>
    <div className="product-system-photo product-model-photo product-hero-photo"><img src={p.heroImage||p.image} alt={p.heroImageNote||p.imageNote}/><span>{p.profileDepth} мм</span></div>
   </section>
@@ -84,7 +84,7 @@ export default async function Page({params}:{params:Promise<{id:string}>}){
 
   <section className="section construction-prices" id="prices"><div className="container">
    <div className="section-heading"><div><span className="eyebrow">ВАРТІСТЬ КОНСТРУКЦІЙ</span><h2>Приклади у стандартній комплектації</h2><p>Ціни дають орієнтир для типових розмірів. Точна вартість залежить від відкривання, склопакета, кольору, фурнітури й актуального прайсу.</p></div></div>
-   <PriceExamples><div className="construction-grid">{p.constructionPrices.map((item,index)=><article key={item.dimensions}><WindowDrawing panes={index+1} dimensions={item.dimensions}/><span className="construction-type">{item.type}</span><h3>{item.dimensions}</h3><SamplePrice profile={p.id} dimensions={item.dimensions} sections={index+1} legacyPrice={item.price}/><Link href={`/calculator?profile=${p.id}`}>Замовити розрахунок <ArrowUpRight size={15}/></Link></article>)}</div></PriceExamples>
+   <PriceExamples><div className="construction-grid">{p.constructionPrices.map((item,index)=><article key={item.dimensions}><WindowDrawing panes={index+1} dimensions={item.dimensions}/><span className="construction-type">{item.type}</span><h3>{item.dimensions}</h3><SamplePrice profile={p.id} dimensions={item.dimensions} sections={index+1} legacyPrice={item.price}/><Link prefetch={false} href={`/calculator?profile=${p.id}&w=${item.dimensions.match(/\d+/g)![0]}&h=${item.dimensions.match(/\d+/g)![1]}&s=${index+1}`}>Замовити розрахунок <ArrowUpRight size={15}/></Link></article>)}</div></PriceExamples>
    <p className="price-disclaimer">{legacyBackend?'Орієнтовні ціни взято з офіційної сторінки виробника.':'Приклади розраховано за поточними цінами для білого вікна з енергозберігаючим склопакетом і однією відкривною стулкою.'} Монтаж і транспортування розраховуються окремо. {business.serviceNotice}</p>
   </div></section>
 

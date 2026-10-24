@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { claimTelegramUpdate, finishTelegramUpdate, isAdmin } from '../db/repositories/admin.repository';
 import { HttpProblem, readJson, timingSafeEqual } from '../middleware/security';
 import { createAdminBot } from '../services/telegram.service';
+import { purgePublicCache } from '../cache/public-cache';
 import type { Env } from '../types/env';
 
 const positiveInteger = z.number().int().min(1).max(Number.MAX_SAFE_INTEGER);
@@ -38,7 +39,10 @@ telegramRoutes.post('/webhook', async (context) => {
   if (!parsed.success) throw new HttpProblem(422, 'Invalid Telegram update');
   const user = parsed.data.callback_query?.from ?? parsed.data.message?.from;
   const chat = parsed.data.callback_query?.message.chat ?? parsed.data.message?.chat;
-  if (!user || user.is_bot || !chat || user.id !== chat.id || !await isAdmin(context.env.DB, user.id)) throw new HttpProblem(403, 'Forbidden');
+  // Ignore (200, so Telegram does not retry) anything that is not a person in their own private chat.
+  if (!user || user.is_bot || !chat || user.id !== chat.id) return context.json({ ok: true, ignored: true }, 200, { 'Cache-Control': 'no-store' });
+  // Everyone gets public replies; the admin dashboard is gated inside the bot (bot_admins).
+  const admin = await isAdmin(context.env.DB, user.id);
   const claim = await claimTelegramUpdate(context.env.DB, parsed.data.update_id);
   if (claim.status === 'processed') return context.json({ ok: true, duplicate: true }, 200, { 'Cache-Control': 'no-store' });
   if (claim.status === 'busy') throw new HttpProblem(503, 'Telegram update in progress', 3);
@@ -47,6 +51,9 @@ telegramRoutes.post('/webhook', async (context) => {
     // The supported subset has been runtime-validated; other official update kinds are rejected.
     await bot.handleUpdate(parsed.data as Parameters<typeof bot.handleUpdate>[0]);
     await finishTelegramUpdate(context.env.DB, parsed.data.update_id, claim.token, true);
+    // An admin may have changed prices/contacts: drop the public cache so the site
+    // picks the change up on the next request (no polling of D1 needed).
+    if (admin) await purgePublicCache();
     return context.json({ ok: true }, 200, { 'Cache-Control': 'no-store' });
   } catch {
     await finishTelegramUpdate(context.env.DB, parsed.data.update_id, claim.token, false);

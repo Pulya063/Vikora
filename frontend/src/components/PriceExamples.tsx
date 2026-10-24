@@ -22,8 +22,9 @@ export function PriceExamples({children}:{children:React.ReactNode}){
       }catch{if(!stopped)setState({prices:null,failed:true})}
       finally{clearTimeout(timeout);pending=null}
     }
-    void refresh();const interval=setInterval(()=>{if(document.visibilityState!=='hidden')void refresh()},60000);
-    return()=>{stopped=true;pending?.abort();clearInterval(interval)};
+    // Prices change only via the Telegram admin webhook: load once per page view, no polling.
+    void refresh();
+    return()=>{stopped=true;pending?.abort()};
   },[]);
   return <Context.Provider value={state}>{children}</Context.Provider>;
 }

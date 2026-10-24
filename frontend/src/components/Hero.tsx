@@ -46,10 +46,10 @@ export default function Hero() {
           <p className="service-note">{business.serviceNotice}</p>
           
           <div className="actions">
-            <Link className="button" href="/calculator">
+            <Link prefetch={false} className="button" href="/calculator">
               Розрахувати вартість <ArrowRight size={17} />
             </Link>
-            <Link className="button secondary" href="/assortment">
+            <Link prefetch={false} className="button secondary" href="/assortment">
               Переглянути вікна
             </Link>
           </div>

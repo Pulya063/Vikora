@@ -5,6 +5,8 @@ import { getPublicContacts, listActivePrices } from '../db/repositories/public.r
 import { createLead, findIdempotentLead, IdempotencyConflictError, leadRequestHash, PriceChangedError } from '../db/repositories/leads.repository';
 import { enforceRateLimit, HttpProblem, readJson, verifyTurnstile } from '../middleware/security';
 import { publicPrices } from '../services/prices.service';
+import { cachedJson, publicCacheKeys } from '../cache/public-cache';
+import { dispatchPendingOutbox } from '../jobs/outbox';
 import type { Env } from '../types/env';
 import { idempotencyKeySchema, leadSchema } from '../validation';
 
@@ -12,15 +14,14 @@ export const publicRoutes = new Hono<{ Bindings: Env }>();
 
 publicRoutes.get('/prices', async (context) => {
   await enforceRateLimit(context, 'prices', 120);
-  const payload = await publicPrices(await listActivePrices(context.env.DB));
-  return context.json(payload, 200, { 'Cache-Control': 'public, max-age=30, s-maxage=60' });
+  const payload = await cachedJson(publicCacheKeys.prices, async () => publicPrices(await listActivePrices(context.env.DB)));
+  return context.json(payload, 200, { 'Cache-Control': 'public, max-age=60, s-maxage=300' });
 });
 
 publicRoutes.get('/contacts', async (context) => {
   await enforceRateLimit(context, 'contacts', 120);
-  return context.json(await getPublicContacts(context.env.DB), 200, {
-    'Cache-Control': 'public, max-age=30, s-maxage=60',
-  });
+  const payload = await cachedJson(publicCacheKeys.contacts, () => getPublicContacts(context.env.DB));
+  return context.json(payload, 200, { 'Cache-Control': 'public, max-age=60, s-maxage=300' });
 });
 
 publicRoutes.post('/leads', async (context) => {
@@ -49,6 +50,12 @@ publicRoutes.post('/leads', async (context) => {
     await verifyTurnstile(context, parsed.data.turnstile_token);
     const priceRows = await listActivePrices(context.env.DB);
     const result = await createLead(context.env.DB, parsed.data, idempotencyKey.data, priceRows);
+    // Event-driven delivery: hand the new outbox events to the Queue right away
+    // instead of waiting for the hourly safety-net Cron.
+    if (result.created) {
+      const dispatch = dispatchPendingOutbox(context.env, 5).catch(() => 0);
+      try { context.executionCtx.waitUntil(dispatch); } catch { await dispatch; }
+    }
     return context.json({ public_id: result.lead.public_id, status: result.lead.status, message: 'Заявку збережено' }, result.created ? 201 : 200, { 'Cache-Control': 'no-store' });
   } catch (error) {
     if (error instanceof PriceChangedError) return context.json({ detail: error.message, estimate: error.estimate }, 409, { 'Cache-Control': 'no-store' });

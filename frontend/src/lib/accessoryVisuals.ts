@@ -2,7 +2,7 @@ export const accessoryVisuals: Record<string, {image: string; caption: string; c
   handles: {image: '/images/accessories/handle.webp', caption: 'Ручка Hoppe Sekustik Toulon'},
   'mosquito-nets': {image: '/images/accessories/net-white.webp', caption: 'Рамкова москітна сітка'},
   'child-locks': {image: '/images/accessories/handle-lock.webp', caption: 'Віконна ручка з ключем'},
-  'window-sills': {image: '/images/accessories/sill-kraft.jpg', caption: 'Підвіконня в сучасному інтер’єрі'},
+  'window-sills': {image: '/images/accessories/sills/sill-kraft-tile.webp', caption: 'Підвіконня Kraft у декорі під дерево', credit: 'LUVIN', source: 'https://luvin.ua/uk/catalog/pidvikonnia-kraft/'},
   hardware: {image: '/images/accessories/hardware.webp', caption: 'Віконна фурнітура'},
   decor: {image: '/images/accessories/decor.webp', caption: 'Декоративне оздоблення профілю'},
   'auto-ventilation': {image: '/images/catalog/auto-ventilation.jpg', caption: 'Приклад системи автоматичного провітрювання', credit:'LUVIN'},

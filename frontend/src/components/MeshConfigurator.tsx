@@ -31,7 +31,7 @@ export default function MeshConfigurator(){
         <div className="segmented-control" role="group" aria-label="Тип москітної сітки">{types.map(option=><button type="button" key={option.id} aria-pressed={type.id===option.id} onClick={()=>setType(option)}>{option.name}</button>)}</div>
         <div className="mesh-description" aria-live="polite"><h3>{type.title}</h3><p>{type.text}</p><span>{type.detail}</span></div>
         <fieldset className="colour-picker"><legend>01 <span>Колір рамки сітки</span><strong>{mesh.name}</strong></legend><div>{colours.map(c=><button type="button" key={c.id} aria-label={`Рамка сітки: ${c.name}`} aria-pressed={mesh.id===c.id} onClick={()=>setMesh(c)}><span style={{backgroundColor:c.hex}}>{mesh.id===c.id&&<Check size={18} color={c.id==='white'?'#34392e':'white'}/>}</span><small>{c.name}</small></button>)}</div></fieldset>
-        <Link className="button" href={`/contacts?interest=${encodeURIComponent(interest)}#quote`}>Підібрати цю сітку <ArrowUpRight size={18}/></Link>
+        <Link prefetch={false} className="button" href={`/contacts?interest=${encodeURIComponent(interest)}#quote`}>Підібрати цю сітку <ArrowUpRight size={18}/></Link>
         <p className="caption">Відтінки на екрані орієнтовні. Доступність кольору для обраного типу та сумісність підтвердимо за зразками.</p>
       </div>
     </div>
