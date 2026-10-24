@@ -109,7 +109,7 @@ describe('D1 public API', () => {
     fetchMock.mockRestore();
   });
 
-  it('accepts only authorized Telegram webhook updates and deduplicates processed updates', async () => {
+  it('authenticates Telegram webhooks, deduplicates updates and gates admin commands', async () => {
     const { db, env } = await environment();
     const adminId = 123456789;
     env.TELEGRAM_BOT_TOKEN = '987654321:test-token';
@@ -127,7 +127,8 @@ describe('D1 public API', () => {
         entities: [{ type: 'bot_command', offset: 0, length: 6 }],
       },
     };
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
+    // A fresh Response per call: a body can be read only once.
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => new Response(JSON.stringify({
       ok: true,
       result: { message_id: 42, date: 1, chat: { id: adminId, type: 'private' }, text: 'VIKORA admin dashboard' },
     }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
@@ -147,8 +148,21 @@ describe('D1 public API', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(await db.prepare('SELECT status,attempts FROM telegram_updates WHERE update_id=?').bind(update.update_id).first()).toMatchObject({ status: 'processed' });
 
-    const unauthorized = { ...update, update_id: 992, message: { ...update.message, from: { ...update.message.from, id: 987654321 } } };
-    expect((await call(unauthorized)).status).toBe(403);
+    // Sender is not the private chat owner: ignored without a reply (200 so Telegram does not retry).
+    const foreignChat = { ...update, update_id: 992, message: { ...update.message, from: { ...update.message.from, id: 987654321 } } };
+    const ignored = await call(foreignChat);
+    expect(ignored.status).toBe(200);
+    expect(await ignored.json()).toMatchObject({ ignored: true });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    // Non-admins get public replies only; admin commands are refused.
+    const visitorId = 555000111;
+    const visitor = { update_id: 993, message: { ...update.message, chat: { id: visitorId, type: 'private' }, from: { id: visitorId, is_bot: false, first_name: 'Visitor' }, text: '/prices', entities: [{ type: 'bot_command', offset: 0, length: 7 }] } };
+    expect((await call(visitor)).status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const sent = JSON.parse(String((fetchMock.mock.calls[1]![1] as RequestInit).body)) as { chat_id: number; text: string };
+    expect(sent.chat_id).toBe(visitorId);
+    expect(sent.text).toContain('лише адміністраторам');
     fetchMock.mockRestore();
   });
 });
