@@ -112,3 +112,13 @@ backend/
 /.dockerignore
 /scripts/
 /frontend/Dockerfile
+
+# Not part of the Cloudflare stack - kept locally only
+/.env.example
+/docs/DOCKER.md
+/docs/DEPLOYMENT.md
+/docs/PLAYWRIGHT-CLI.md
+/docs/CLOUDFLARE_TEST_REPORT.md
+/frontend/pnpm-workspace.yaml
+/frontend/playwright.forms.config.ts
+/frontend/tests/forms
