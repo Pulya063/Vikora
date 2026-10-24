@@ -49,7 +49,7 @@ telegramRoutes.post('/webhook', async (context) => {
   try {
     const bot = createAdminBot(context.env);
     // The supported subset has been runtime-validated; other official update kinds are rejected.
-    await bot.handleUpdate(parsed.data as Parameters<typeof bot.handleUpdate>[0]);
+    await bot.handleUpdate(parsed.data as unknown as Parameters<typeof bot.handleUpdate>[0]);
     await finishTelegramUpdate(context.env.DB, parsed.data.update_id, claim.token, true);
     // An admin may have changed prices/contacts: drop the public cache so the site
     // picks the change up on the next request (no polling of D1 needed).

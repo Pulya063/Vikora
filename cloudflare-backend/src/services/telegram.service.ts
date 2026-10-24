@@ -112,14 +112,14 @@ export function createAdminBot(env: Env): Bot {
   };
 
   bot.command('start', async (ctx) => {
-    await saveSession(env.DB, ctx.from.id, 'menu', {});
+    await saveSession(env.DB, ctx.from!.id, 'menu', {});
     await ctx.reply('VIKORA admin dashboard', { reply_markup: dashboard() });
   });
-  bot.command('prices', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showPrices(ctx); });
-  bot.command('contacts', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showContacts(ctx); });
-  bot.command('leads', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showLeads(ctx); });
-  bot.command('status', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showStatus(ctx); });
-  bot.command('cancel', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await ctx.reply('Дію скасовано.', { reply_markup: dashboard() }); });
+  bot.command('prices', async (ctx) => { await saveSession(env.DB, ctx.from!.id, 'menu', {}); await showPrices(ctx); });
+  bot.command('contacts', async (ctx) => { await saveSession(env.DB, ctx.from!.id, 'menu', {}); await showContacts(ctx); });
+  bot.command('leads', async (ctx) => { await saveSession(env.DB, ctx.from!.id, 'menu', {}); await showLeads(ctx); });
+  bot.command('status', async (ctx) => { await saveSession(env.DB, ctx.from!.id, 'menu', {}); await showStatus(ctx); });
+  bot.command('cancel', async (ctx) => { await saveSession(env.DB, ctx.from!.id, 'menu', {}); await ctx.reply('Дію скасовано.', { reply_markup: dashboard() }); });
   bot.callbackQuery('menu:prices', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showPrices(ctx); await ctx.answerCallbackQuery(); });
   bot.callbackQuery('menu:contacts', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showContacts(ctx); await ctx.answerCallbackQuery(); });
   bot.callbackQuery('menu:leads', async (ctx) => { await saveSession(env.DB, ctx.from.id, 'menu', {}); await showLeads(ctx); await ctx.answerCallbackQuery(); });
