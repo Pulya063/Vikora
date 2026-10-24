@@ -1,4 +1,4 @@
-import products from '../backend/app/config/products.json';
+import products from './catalog/products.json';
 
 const MICRO = 1_000_000n;
 const STRUCTURE_DENOMINATOR = MICRO ** 4n;

@@ -22,11 +22,11 @@ flowchart LR
 
 | Поточний FastAPI | Cloudflare Worker | Статус міграції |
 |---|---|---|
-| `GET /api/v1/products` | статичний каталог frontend з `backend/app/config/products.json` | Наразі фронтенд уже читає той самий JSON напряму; окремий endpoint Worker не створюється |
+| `GET /api/v1/products` | статичний каталог frontend з `shared/catalog/products.json` | Наразі фронтенд уже читає той самий JSON напряму; окремий endpoint Worker не створюється |
 | `GET /api/v1/products/{product_id}` | статична сторінка `assortment/[id]` | SSR/SSG з наявного JSON каталогу |
 | `GET /api/v1/products/{product_id}/options` | статичні поля продукту у frontend JSON | Не потребує окремого запиту у поточному UI |
 | `GET /api/v1/contact-information` | `GET /api/contacts` | Новий стабільний контракт, кеш 60 с |
-| `GET /api/v1/technologies` | статична сторінка технологій з `backend/app/config/technologies.json` | Залишено як локальні контентні дані frontend |
+| `GET /api/v1/technologies` | статична сторінка технологій з `shared/catalog/technologies.json` | Залишено як локальні контентні дані frontend |
 | `GET /api/v1/calculator/options` | статичні назви продуктів та опцій у frontend | Тестові ціни завантажуються окремо з `/api/prices` |
 | `POST /api/v1/calculator/estimate` | `GET /api/prices` + розрахунок frontend | Формула дублюється у спільних контрактних тестах; backend повторно перевіряє ціну при заявці |
 | `POST /api/v1/quote-requests` | `POST /api/leads` | Сумісні поля + обов'язковий Turnstile token у production |
