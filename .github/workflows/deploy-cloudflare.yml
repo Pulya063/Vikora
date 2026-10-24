@@ -26,6 +26,8 @@ jobs:
   verify:
     if: inputs.confirm_deploy && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/ci.yml
+    with:
+      scope: cloudflare
 
   deploy-api:
     needs: verify

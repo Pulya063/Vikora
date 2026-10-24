@@ -1,0 +1,18 @@
+{
+  "name": "VIKORA",
+  "subtitle": "ВІКНА ТА ДВЕРІ",
+  "supplier": {"name": "LUVIN", "wording": "Працюємо з продукцією LUVIN"},
+  "serviceArea": ["Вінницька область"],
+  "isMock": true,
+  "contacts": {
+    "phone": "+380 67 424 33 25",
+    "telegram": "tg://resolve?phone=%2B380674243325",
+    "viber": "viber://chat?number=%2B380674243325",
+    "email": "vikora.info@gmail.com",
+    "address": null
+  },
+  "phonePlaceholder": "+38 (0__) ___ __ __",
+  "socials": {"instagram": null, "facebook": null, "telegram": null},
+  "serviceNotice": "За потреби до загального бюджету потрібно врахувати транспортування та встановлення. Їхню вартість обговорюємо з менеджером окремо.",
+  "estimateNotice": "Це попередній розрахунок. Остаточна вартість конструкції залежить від точних замірів та комплектації."
+}

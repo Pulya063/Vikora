@@ -1,0 +1,131 @@
+[
+  {
+    "id": "grand-pro",
+    "name": "LUVIN Grand Pro",
+    "supplier": "LUVIN",
+    "profileSystem": "72 мм by VEKA",
+    "profileDepth": 72,
+    "chambers": 5,
+    "glazingMax": 44,
+    "description": "Комфортне тепло та практичність щодня.",
+    "benefits": ["Менше тепловтрат із правильно підібраним склопакетом", "Простий догляд за білим профілем"],
+    "specifications": {"Профіль": "72 мм · 5 камер", "Склопакет": "до 44 мм", "Фурнітура": "WINKHAUS"},
+    "detailSections": [
+      {"title": "Профіль і конструкція", "items": [
+        {"label": "Профільна система", "value": "72 мм by VEKA · 5 камер"}, {"label": "Зовнішня стінка профілю", "value": "2,7 мм"}, {"label": "Контури ущільнення", "value": "2"}, {"label": "Фурнітура", "value": "WINKHAUS, Німеччина"}
+      ]},
+      {"title": "Склопакет", "items": [
+        {"label": "Два скла", "value": "24 мм"}, {"label": "Три скла", "value": "31 або 44 мм"}, {"label": "Доступні рішення", "value": "Енергозберігаюче й сонцезахисне скло, тепла дистанційна рамка, інертний газ"}
+      ]},
+      {"title": "Відкривання та провітрювання", "items": [
+        {"label": "Відкривання", "value": "Відкидне, поворотне або поворотно-відкидне"}, {"label": "Розташування ручки", "value": "Посередині або внизу стулки"}, {"label": "Петлі", "value": "Видимі або приховані"}, {"label": "Провітрювання", "value": "Мікропровітрювання, відкидне або по периметру"}
+      ]},
+      {"title": "Безпека та оздоблення", "items": [
+        {"label": "Додатковий захист", "value": "Протизламні зачепи: 1, 2, 4 точки або по периметру"}, {"label": "Дитяча безпека", "value": "Ручка з ключем або дитячий замок"}, {"label": "Кольори ручки", "value": "Біла, коричнева, срібна, бронза, сталева"}, {"label": "Ламінація", "value": "Weiß, Mooreiche, Golden oak, Nussbaum, Anthrazitgrau та інші декори LUVIN"}
+      ]}
+    ],
+    "compatibleOptions": ["warm_edge", "child_lock", "upgraded_hardware", "hidden_hardware"],
+    "glassOptions": ["standard", "energy_saving", "solar_control"],
+    "mockBasePrice": 6900,
+    "guaranteeYears": 5,
+    "constructionPrices": [
+      {"type": "Одностулкове", "dimensions": "800 × 1400 мм", "price": 6138},
+      {"type": "Двостулкове", "dimensions": "1300 × 1400 мм", "price": 8949},
+      {"type": "Тристулкове", "dimensions": "2100 × 1400 мм", "price": 13167}
+    ],
+    "source": "https://luvin.ua/uk/catalog/metaloplastykove-vikno-luvin-grand-pro/",
+    "image": "/images/products/grand-pro-window.png",
+    "cardImage": "/images/products/grand-pro-cutaway.webp",
+    "cardImageNote": "Візуалізація перерізу профільної системи LUVIN Grand Pro.",
+    "heroImage": "/images/products/grand-pro-hero-hq.webp",
+    "heroImageNote": "Візуалізація білого ПВХ-вікна у світлому кухонному інтер’єрі.",
+    "profileImage": "/images/products/grand-pro-profile.jpg",
+    "imageNote": "Зображення моделі LUVIN Grand Pro. Вигляд залежить від комплектації."
+  },
+  {
+    "id": "comfort",
+    "name": "LUVIN Comfort",
+    "supplier": "LUVIN",
+    "profileSystem": "VEKA 70",
+    "profileDepth": 70,
+    "chambers": 5,
+    "glazingMax": 40,
+    "description": "Затишок удома в будь-яку пору року.",
+    "benefits": ["Профіль класу А для житлових приміщень", "Вибір енергозберігаючого або сонцезахисного склопакета"],
+    "specifications": {"Профіль": "70 мм · 5 камер · клас А", "Склопакет": "до 40 мм", "Фурнітура": "WINKHAUS"},
+    "detailSections": [
+      {"title": "Профіль і конструкція", "items": [
+        {"label": "Профільна система", "value": "VEKA 70 мм · 5 камер · клас А"}, {"label": "Зовнішня стінка профілю", "value": "3 мм"}, {"label": "Контури ущільнення", "value": "2, з можливістю оновлення"}, {"label": "Фурнітура", "value": "WINKHAUS, Німеччина"}, {"label": "Площа склопакета у відкривній стулці", "value": "До 2,25 м²"}
+      ]},
+      {"title": "Склопакет", "items": [
+        {"label": "Два скла", "value": "24 мм"}, {"label": "Три скла", "value": "32 або 40 мм"}, {"label": "Доступні рішення", "value": "Енергозберігаюче й сонцезахисне скло, заповнення аргоном або криптоном"}
+      ]},
+      {"title": "Відкривання та провітрювання", "items": [
+        {"label": "Відкривання", "value": "Відкидне, поворотне або поворотно-відкидне"}, {"label": "Розташування ручки", "value": "Посередині або внизу стулки"}, {"label": "Петлі", "value": "Видимі або приховані"}, {"label": "Провітрювання", "value": "Мікропровітрювання, відкидне або по периметру"}
+      ]},
+      {"title": "Безпека та оздоблення", "items": [
+        {"label": "Додатковий захист", "value": "Протизламні зачепи: 1, 2, 4 точки або по периметру"}, {"label": "Дитяча безпека", "value": "Ручка з ключем або дитячий замок"}, {"label": "Кути в ламінації", "value": "Доступний безшовний вигляд"}, {"label": "Кольори ручки", "value": "Біла, коричнева, срібна, бронза, сталева"}, {"label": "Ламінація", "value": "Weiß, Mooreiche, Golden oak, Nussbaum, Anthrazitgrau та інші декори LUVIN"}
+      ]}
+    ],
+    "compatibleOptions": ["warm_edge", "child_lock", "upgraded_hardware", "hidden_hardware"],
+    "glassOptions": ["standard", "energy_saving", "solar_control"],
+    "mockBasePrice": 7800,
+    "guaranteeYears": 10,
+    "constructionPrices": [
+      {"type": "Одностулкове", "dimensions": "800 × 1400 мм", "price": 7334},
+      {"type": "Двостулкове", "dimensions": "1300 × 1400 мм", "price": 10211},
+      {"type": "Тристулкове", "dimensions": "2100 × 1400 мм", "price": 14753}
+    ],
+    "source": "https://luvin.ua/uk/catalog/metaloplastykove-vikno-luvin-comfort/",
+    "image": "/images/products/comfort-window.png",
+    "cardImage": "/images/products/comfort-cutaway.webp",
+    "cardImageNote": "Візуалізація перерізу профільної системи LUVIN Comfort.",
+    "heroImage": "/images/products/comfort-hero-hq.webp",
+    "heroImageNote": "Візуалізація білого ПВХ-вікна у теплому житловому інтер’єрі.",
+    "profileImage": "/images/products/comfort-profile.jpg",
+    "imageNote": "Зображення моделі LUVIN Comfort. Вигляд залежить від комплектації."
+  },
+  {
+    "id": "comfort-pro",
+    "name": "LUVIN Comfort Pro",
+    "supplier": "LUVIN",
+    "profileSystem": "VEKA 76",
+    "profileDepth": 76,
+    "chambers": 5,
+    "glazingMax": 46,
+    "description": "Більше уваги до тепла. Більше світла у вашому домі.",
+    "benefits": ["Глибший профіль і 46-мм склопакет для теплоізоляційних рішень", "Акуратний безшовний вигляд зварених кутів"],
+    "specifications": {"Профіль": "76 мм · 5 камер · клас А", "Склопакет": "46 мм", "Фурнітура": "WINKHAUS"},
+    "detailSections": [
+      {"title": "Профіль і конструкція", "items": [
+        {"label": "Профільна система", "value": "VEKA 76 мм · 5 камер · клас А"}, {"label": "Зовнішня стінка профілю", "value": "3 мм"}, {"label": "Контури ущільнення", "value": "2, з можливістю оновлення"}, {"label": "Фурнітура", "value": "WINKHAUS, Німеччина"}, {"label": "Площа склопакета у відкривній стулці", "value": "До 2,25 м²"}
+      ]},
+      {"title": "Склопакет і тепло", "items": [
+        {"label": "Склопакет", "value": "46 мм · три скла"}, {"label": "Тепла дистанційна рамка", "value": "Доступна у відповідній комплектації"}, {"label": "Опір теплопередачі у прикладі LUVIN", "value": "1,18 з теплою рамкою; 1,0 з алюмінієвою"}, {"label": "Умови наведеного прикладу", "value": "1320 × 1450 мм, одна стулка, два енергозберігаючі скла, аргон у камерах"}
+      ]},
+      {"title": "Відкривання та провітрювання", "items": [
+        {"label": "Відкривання", "value": "Відкидне, поворотне або поворотно-відкидне"}, {"label": "Розташування ручки", "value": "Посередині або внизу стулки"}, {"label": "Петлі", "value": "Видимі або приховані"}, {"label": "Провітрювання", "value": "Мікропровітрювання, відкидне або по периметру"}
+      ]},
+      {"title": "Оздоблення", "items": [
+        {"label": "Кути", "value": "Доступний безшовний вигляд"}, {"label": "Кольори ручки", "value": "Біла, коричнева, срібна, бронза, сталева"}, {"label": "Ламінація", "value": "Weiß, Mooreiche, Golden oak, Nussbaum, Anthrazitgrau та інші декори LUVIN"}
+      ]}
+    ],
+    "compatibleOptions": ["warm_edge", "hidden_hardware"],
+    "glassOptions": ["energy_saving"],
+    "mockBasePrice": 9200,
+    "guaranteeYears": 10,
+    "constructionPrices": [
+      {"type": "Одностулкове", "dimensions": "800 × 1400 мм", "price": 8080},
+      {"type": "Двостулкове", "dimensions": "1300 × 1400 мм", "price": 11736},
+      {"type": "Тристулкове", "dimensions": "2100 × 1400 мм", "price": 16961}
+    ],
+    "source": "https://luvin.ua/uk/catalog/metaloplastykove-vikno-luvin-comfort-pro/",
+    "image": "/images/products/comfort-pro-window.png",
+    "cardImage": "/images/products/comfort-pro-cutaway.webp",
+    "cardImageNote": "Візуалізація перерізу профільної системи LUVIN Comfort Pro.",
+    "heroImage": "/images/products/comfort-pro-hero-hq.webp",
+    "heroImageNote": "Візуалізація великої ПВХ-конструкції у сучасному інтер’єрі.",
+    "profileImage": "/images/products/comfort-pro-profile.jpg",
+    "imageNote": "Зображення моделі LUVIN Comfort Pro. Вигляд залежить від комплектації."
+  }
+]

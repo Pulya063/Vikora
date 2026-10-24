@@ -104,19 +104,7 @@ ehthumbs.db
 .logs-web-*.txt
 _to_delete/
 
-# Legacy FastAPI backend - kept locally only, not deployed (catalog lives in shared/catalog)
-backend/
-
-# Legacy Docker/Render tooling - kept locally only
-/compose.yaml
-/.dockerignore
-/scripts/
-/frontend/Dockerfile
-
 # Not part of the Cloudflare stack - kept locally only
-/.env.example
-/docs/DOCKER.md
-/docs/DEPLOYMENT.md
 /docs/PLAYWRIGHT-CLI.md
 /docs/CLOUDFLARE_TEST_REPORT.md
 /frontend/pnpm-workspace.yaml
