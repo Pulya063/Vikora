@@ -1,6 +1,6 @@
 # Copy to .dev.vars. Never commit .dev.vars.
 TURNSTILE_SECRET=
 TELEGRAM_BOT_TOKEN=
-TELEGRAM_BOT_USERNAME=vikora_admin_bot
+TELEGRAM_BOT_USERNAME=Vikora_servis_bot
 TELEGRAM_WEBHOOK_SECRET=
 NOTION_TOKEN=
