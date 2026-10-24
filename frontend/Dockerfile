@@ -4,8 +4,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend/ ./
-# Static pages import the shared catalog directly from the backend.
-COPY backend/app/config/ /app/backend/app/config/
+# Static pages import the shared catalog and pricing from /shared.
 COPY shared/ /app/shared/
 ARG API_URL=http://app:8000
 ARG NEXT_PUBLIC_BACKEND_MODE=legacy

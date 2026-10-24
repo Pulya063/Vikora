@@ -103,3 +103,6 @@ ehthumbs.db
 # local deploy logs and files staged for deletion
 .logs-web-*.txt
 _to_delete/
+
+# Legacy FastAPI backend - kept locally only, not deployed (catalog lives in shared/catalog)
+backend/

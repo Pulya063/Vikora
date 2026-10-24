@@ -1,6 +1,6 @@
-import products from '../../../backend/app/config/products.json';
-import business from '../../../backend/app/config/business.json';
-import technologies from '../../../backend/app/config/technologies.json';
+import products from '../../../shared/catalog/products.json';
+import business from '../../../shared/catalog/business.json';
+import technologies from '../../../shared/catalog/technologies.json';
 export { products, business, technologies };
 export type Product = typeof products[number];
 export const money = (n:number) => new Intl.NumberFormat('uk-UA').format(n);

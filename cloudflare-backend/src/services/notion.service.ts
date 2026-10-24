@@ -1,5 +1,5 @@
 import { APIResponseError, Client, UnknownHTTPResponseError } from '@notionhq/client';
-import products from '../../../backend/app/config/products.json';
+import products from '../../../shared/catalog/products.json';
 import type { LeadRow } from '../db/schema';
 import { DeliveryError } from '../jobs/delivery-error';
 import type { Env } from '../types/env';
