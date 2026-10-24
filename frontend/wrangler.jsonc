@@ -13,6 +13,15 @@
   "vars": {
     "NEXTJS_ENV": "development"
   },
+  // Workers Builds previews (non-production branches). Previews do NOT inherit top-level
+  // bindings/vars; service bindings call the bound Worker's production deployment.
+  "previews": {
+    "services": [
+      { "binding": "WORKER_SELF_REFERENCE", "service": "vikora-web-local" },
+      { "binding": "BACKEND", "service": "vikora-api" }
+    ],
+    "vars": { "NEXTJS_ENV": "development" }
+  },
   "env": {
     "staging": {
       "name": "vikora-web-staging",

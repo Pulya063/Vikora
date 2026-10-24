@@ -66,6 +66,35 @@
 			"0 * * * *"
 		]
 	},
+	// Workers Builds previews (non-production branches). Previews do NOT inherit top-level
+	// settings; no queue consumers or crons here. Shares the local/test D1 database.
+	"previews": {
+		"vars": {
+			"APP_ENV": "local",
+			"ALLOWED_ORIGINS": "http://localhost:3000,http://127.0.0.1:3000,https://vikora-web-local.vikora-info.workers.dev",
+			"TURNSTILE_BYPASS": "true",
+			"NOTION_DATA_SOURCE_ID": "",
+			"PUBLIC_SITE_URL": "https://vikora-web-local.vikora-info.workers.dev",
+			"TELEGRAM_MANAGER_CHAT_ID": "",
+			"TELEGRAM_BOT_USERNAME": "vikora_admin_bot"
+		},
+		"d1_databases": [
+			{
+				"binding": "DB",
+				"database_name": "vikora_db",
+				"database_id": "6ab96508-1456-474e-91b6-8557eaeaac07",
+				"migrations_dir": "migrations"
+			}
+		],
+		"queues": {
+			"producers": [
+				{
+					"binding": "EVENT_QUEUE",
+					"queue": "vikora-events-local"
+				}
+			]
+		}
+	},
 	"env": {
 		"staging": {
 			"name": "vikora-api-staging",
